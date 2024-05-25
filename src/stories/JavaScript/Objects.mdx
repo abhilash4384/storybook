@@ -1,0 +1,108 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="JS Objects" />
+
+<div className="sb-container">
+  <div className='sb-section-title'>
+    # JS Objects
+  </div>
+
+  <div className="sb-section">
+   <div className="sb-section-item">
+      <h4 className="sb-section-item-heading">Object() Constructor</h4>
+       <p className="sb-section-item-paragraph">One way of creating object, Note: Object() can be called with or without new. </p>
+       ```js
+       const obj = new Object();
+       obj.name = 'abhi'; //{name: 'abhi'}
+       ```
+   </div>
+
+    <div className="sb-section-item">
+      <h4 className="sb-section-item-heading">Object.assign()</h4>
+       <p className="sb-section-item-paragraph">Used to shallow clone one or multiple objects into one object.(spread operator is modern alternative). For deep cloning, we need to use alternatives like structuredClone() -it will only accept one object at a time</p>
+       ```js
+       const obj = new Object();
+       obj.name = 'abhi'; //{name: 'abhi'}
+       ```
+
+   </div>
+
+    <div className="sb-section-item">
+      <h4 className="sb-section-item-heading">Object.defineProperties()</h4>
+       <p className="sb-section-item-paragraph">defines new or modifies existing properties directly on an object, returning the object.</p>
+       ```js
+      const obj = {};
+
+                const newObj = Object.defineProperties(obj, {
+                    name: {
+                    configurable: true,
+                    enumerable: true,
+                    // value: 'Abhilash', //either we can directly use the value or getter & setters, if both kept then compiler will throw an error
+                    get() {
+                         return `Hello ${value}`;
+                    },
+                    set: function (v) {
+                            if (v.length > 2) {
+                            value = v;
+                            } else {
+                            value = 'Batman';
+                            }
+                         },
+                    },
+                });
+                newObj.name = 'ab';
+                console.log(obj === newObj);
+                console.log(obj.name); // Hello Batman
+                newObj.name = 'Abhilash';
+                console.log(obj.name); // Hello Abhilash
+       ```
+
+   </div>
+
+    <div className="sb-section-item">
+      <h4 className="sb-section-item-heading">Object.defineProperty()</h4>
+       <p className="sb-section-item-paragraph">Similar to Object.defineProperties but accepts only single property at a time</p>
+       ```js
+          const object1 = {};
+            Object.defineProperty(object1, 'property1', {
+            value: 42,
+            writable: false,
+            });
+       ```
+
+   </div>
+
+     <div className="sb-section-item">
+      <h4 className="sb-section-item-heading">Object.create()</h4>
+       <p className="sb-section-item-paragraph"> creates a new object, using an existing object as the prototype of the newly created object. We can pass the second paramer similar to what we pass for Object.defineProperties (i.e propery descriptor)</p>
+       ```js
+      const person = {
+            msg: 'when will you return my money?',
+            ask: function () {
+            	console.log(`Hello ${this.name}, ${this.msg}?`);
+            },
+        };
+
+            const myObj = Object.create(person);
+            myObj.name = 'Prajesh';
+            myObj.ask();
+
+            const myObj2 = Object.create(person, {
+                    name: {
+                    configurable: true,
+                    writable: true,
+                    enumerable: true,
+                    value: 'Saurabh',
+                    },
+            });
+            myObj2.ask();
+
+            // o = Object.create(null);
+            // Is equivalent to:
+            //o = { __proto__: null };
+       ```
+
+   </div>
+  </div>
+
+</div>
