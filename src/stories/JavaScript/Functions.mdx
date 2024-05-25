@@ -1,0 +1,71 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="JS Functions" />
+
+<div className="sb-container">
+  <div className='sb-section-title'>
+    # JS Functions
+
+    Functions are heart of JS, here we will go though different types of functions and more...
+
+  </div>
+  <div className="sb-section">
+    <div className="sb-section-item">
+      
+      <h4 className="sb-section-item-heading">1. Function Statement or Function Declaration</h4>
+       <p className="sb-section-item-paragraph"> This function can be called even before declaring(writing) it because of hoisting.
+       for other type of function we can not do that.</p>
+            ```js
+              function a() {
+                    console.log('Abhilash');
+                }
+            ```
+
+        <h4 className="sb-section-item-heading">2. Function Expression</h4>
+            ```js
+              var b = function() {
+                console.log('Kiara');
+              }
+            ```
+
+        <h4 className="sb-section-item-heading">3. Anonymous Function</h4>
+        <p className="sb-section-item-paragraph">A function without name can not be called directly, it is used when passing a function as argument like in promises or loops etc...</p>
+            ```js
+           [1,2].map(function(item) {
+            // anonymous function
+           console.log(item);
+           })
+            ```
+
+        <h4 className="sb-section-item-heading">4. Named Function Expresion</h4>
+        <p className="sb-section-item-paragraph">Similar to function expression but the function also has a name. In below example you can call c() but b() will not work.</p>
+            ```js
+            var c = function b() {
+                console.log('Named function expression');
+            }
+            ```
+          <h4 className="sb-section-item-heading">5. Arrow Function</h4>
+            ```js
+            const arrow = () => {
+                console.log('Arrow function');
+            }
+            ```
+        <h4 className="sb-section-item-heading">Difference between parameters and arguments</h4>
+        <p className="sb-section-item-paragraph">When we pass a value its called <b>argument</b> and in the receiving end its called <b>parameter</b>.</p>
+
+        ```js
+          function fun(parameter1) {
+              console.log(parameter1);
+          }
+          var argument1 = 'Abhilash';
+          fun(argument1);
+          ```
+        <h4 className="sb-section-item-heading">Notes</h4>
+        <p className="sb-section-item-paragraph">The ability to pass function as an parameter
+        to other function or a returning a function is called first class function</p>
+
+  </div>
+
+</div>
+</div>
+````
