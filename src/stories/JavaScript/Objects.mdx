@@ -182,6 +182,119 @@ import { Meta } from '@storybook/blocks';
            ```
      </div>
 
+   <div className="sb-section-item">
+      <h4 className="sb-section-item-heading">Object.setPrototypeOf()</h4>
+       <p className="sb-section-item-paragraph">sets the prototype (i.e., the internal [[Prototype]] property) of a specified object to another object or null. This is not recommended as it is very slow process insted prefer using Object.create(). To get the prototype of an object use Object.getPrototypeOf()</p>
+       ```js
+            const obj = {};
+            const parent = { foo: 'bar' };
+
+            console.log(obj.foo);
+            // Expected output: undefined
+
+            Object.setPrototypeOf(obj, parent);
+
+            console.log(obj.foo);
+            // Expected output: "bar"
+            Object.getPrototypeOf(obj)
+           ```
+     </div>
+
+     <div className="sb-section-item">
+      <h4 className="sb-section-item-heading">Object.hasOwn()</h4>
+       <p className="sb-section-item-paragraph">The Object.hasOwn() static method returns true if the specified object has the indicated property as its own property. If the property is inherited, or does not exist, the method returns false.</p>
+       ```js
+           const object1 = {
+            prop: 'exists',
+            };
+
+            console.log(Object.hasOwn(object1, 'prop'));
+            // Expected output: true
+
+            console.log(Object.hasOwn(object1, 'toString'));
+            // Expected output: false
+        ```
+    </div>
+
+    <div className="sb-section-item">
+      <h4 className="sb-section-item-heading">Object.is()</h4>
+       <p className="sb-section-item-paragraph">The Object.is() static method determines whether two values are the same value.  There are some differences between == or === and Object.is (better to read mdn docs I did not understood it)</p>
+       ```js
+            Object.is(25, 25); // true
+            Object.is("foo", "foo"); // true
+            Object.is("foo", "bar"); // false
+            Object.is(null, null); // true
+            Object.is(undefined, undefined); // true
+            Object.is(window, window); // true
+            Object.is([], []); // false
+        ```
+    </div>
+
+    <div className="sb-section-item">
+      <h4 className="sb-section-item-heading">Object.keys()</h4>
+       <p className="sb-section-item-paragraph">Returns array of keys of object</p>
+       ```js
+            const object1 = {
+                a: 'somestring',
+                b: 42,
+                c: false,
+                };
+
+            console.log(Object.keys(object1));
+            // Expected output: Array ["a", "b", "c"]
+        ```
+    </div>
+
+
+    <div className="sb-section-item">
+      <h4 className="sb-section-item-heading">Object.values()</h4>
+       <p className="sb-section-item-paragraph">Returns array of valus of object</p>
+       ```js
+         const object1 = {
+            a: 'somestring',
+            b: 42,
+            c: false,
+            };
+
+            console.log(Object.values(object1));
+            // Expected output: Array ["somestring", 42, false]
+        ```
+    </div>
+
+
+    <div className="sb-section-item">
+      <h4 className="sb-section-item-heading">Object.groupBy(items, CB)</h4>
+       <p className="sb-section-item-paragraph">The Object.groupBy() static method groups the elements of a given iterable according to the string values returned by a provided callback function.</p>
+       ```js
+        const inventory = [
+            { name: "asparagus", type: "vegetables", quantity: 5 },
+            { name: "bananas", type: "fruit", quantity: 0 },
+            { name: "goat", type: "meat", quantity: 23 },
+            { name: "cherries", type: "fruit", quantity: 5 },
+            { name: "fish", type: "meat", quantity: 22 },
+        ];
+
+        const result = Object.groupBy(inventory, ({ type }) => type);
+        console.log(result)
+        // as the time of writing this doc the groupBy is not avilable in node js so you may need to test it inside browser
+        /* Result is:
+            {
+            vegetables: [
+                { name: 'asparagus', type: 'vegetables', quantity: 5 },
+            ],
+            fruit: [
+                { name: "bananas", type: "fruit", quantity: 0 },
+                { name: "cherries", type: "fruit", quantity: 5 }
+            ],
+            meat: [
+                { name: "goat", type: "meat", quantity: 23 },
+                { name: "fish", type: "meat", quantity: 22 }
+            ]
+            }
+        */
+        ```
+    </div>
+
  </div>
 
 </div>
