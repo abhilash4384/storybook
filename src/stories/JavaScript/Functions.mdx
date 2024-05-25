@@ -84,6 +84,33 @@ import { Meta } from '@storybook/blocks';
                 myCar.printDetails();
                 ```
 
+        <h4 className="sb-section-item-heading">8. Getters & Setters</h4>
+            ```js
+                const personObj = {
+                    firstName: '',
+                    lastName: '',
+                    //Note: getter and setter functions are used in object functions
+                    get getFullName() {
+                        return `${this.firstName} ${this.lastName}`;
+                    },
+                    set setFullName(name) {
+                        //here you can do some sort of validation or sanitization etc
+                        const tempFullName = name.split(' ');
+                        this.firstName = tempFullName[0].toUpperCase();
+                        this.lastName = tempFullName[1].toUpperCase();
+                    },
+                };
+                personObj.setFullName = 'rowdy rathore';
+                //personObj.firstName = 'abhilash' this will also work here
+                console.log(personObj.getFullName);
+                ```
+
+        <h4 className="sb-section-item-heading">9. IIFE - Immediately Invoked Function Expression</h4>
+            ```js
+               (function () {
+                    console.log('This is  IIFE (Immediately Invoked Function Expression)');
+               })();
+                ```
 
             <h4 className="sb-section-item-heading">
                 Difference between parameters and arguments
@@ -107,3 +134,4 @@ import { Meta } from '@storybook/blocks';
   </div>
 </div>
 </div>
+````
