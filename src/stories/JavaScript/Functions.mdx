@@ -50,22 +50,60 @@ import { Meta } from '@storybook/blocks';
                 console.log('Arrow function');
             }
             ```
-        <h4 className="sb-section-item-heading">Difference between parameters and arguments</h4>
-        <p className="sb-section-item-paragraph">When we pass a value its called <b>argument</b> and in the receiving end its called <b>parameter</b>.</p>
+        <h4 className="sb-section-item-heading">6. Generator Function</h4>
+        <p className="sb-section-item-paragraph">A <b>function*</b> declration creates generator function, calling this function will return Generator object. Note that insted of yield if we use return statement the next() will return object of 'returned value' and done: true.</p>
+            ```js
+            function* generatorFN() {
+                            yield 1;
+                            // if we put return here the {value: retured value, done: true}
+                            yield 2;
+                            yield 3;
+                            // after the last yield next() will return {value: undefined, done:true}
+                        }
 
-        ```js
-          function fun(parameter1) {
-              console.log(parameter1);
-          }
-          var argument1 = 'Abhilash';
-          fun(argument1);
-          ```
-        <h4 className="sb-section-item-heading">Notes</h4>
-        <p className="sb-section-item-paragraph">The ability to pass function as an parameter
-        to other function or a returning a function is called first class function</p>
+                const itr = generatorFN();
+                let v = itr.next();
+                while (!v.done) {
+                console.log('value = ', v.value);
+                v = itr.next();
+                ```
+
+        <h4 className="sb-section-item-heading">7. Function Constructor or Constructor Function</h4>
+        <p className="sb-section-item-paragraph"></p>
+            ```js
+            function Car(name) {
+                this.carName = name;
+                this.brand = 'Tata';
+                this.printDetails = function () {
+                    console.log(`The ${this.brand}'s ${this.carName} pretty safe!`);
+            };
+            }
+            const myCar = new Car('Nexon');
+            // calling Car() wihtout new keyword will return undefined unless we explicitly return something
+            // similary if we put a return statement in between somewhere lets say before this.printDetails then the rest of the code is not included in newly created object(i.e printDetails is not avialable)
+                myCar.printDetails();
+                ```
+
+
+            <h4 className="sb-section-item-heading">
+                Difference between parameters and arguments
+            </h4>
+            <p className="sb-section-item-paragraph">
+                When we pass a value its called <b>argument</b> and in the receiving end its
+                called <b>parameter</b>.
+            </p>
+
+                    ```js
+                    function fun(parameter1) {
+                        console.log(parameter1);
+                    }
+                    var argument1 = 'Abhilash';
+                    fun(argument1);
+                    ```
+                    <h4 className="sb-section-item-heading">Notes</h4>
+                    <p className="sb-section-item-paragraph">The ability to pass function as an parameter
+                    to other function or a returning a function is called first class function</p>
 
   </div>
-
 </div>
 </div>
-````
