@@ -29,7 +29,7 @@ import { Meta } from '@storybook/blocks';
 
     <div className="sb-section-item">
       <h4 className="sb-section-item-heading">Object.defineProperties()</h4>
-       <p className="sb-section-item-paragraph">defines new or modifies existing properties directly on an object, returning the object.</p>
+       <p className="sb-section-item-paragraph">defines new or modifies existing properties directly on an object, returning the object. Also The Object.getOwnPropertyDescriptors() static method returns all own property descriptors of a given object.</p>
        ```js
       const obj = {};
 
@@ -55,19 +55,24 @@ import { Meta } from '@storybook/blocks';
                 console.log(obj.name); // Hello Batman
                 newObj.name = 'Abhilash';
                 console.log(obj.name); // Hello Abhilash
+
+                const descriptors1 = Object.getOwnPropertyDescriptors(newObj);
+                console.log(descriptors1)
        ```
 
    </div>
 
     <div className="sb-section-item">
       <h4 className="sb-section-item-heading">Object.defineProperty()</h4>
-       <p className="sb-section-item-paragraph">Similar to Object.defineProperties but accepts only single property at a time</p>
+       <p className="sb-section-item-paragraph">Similar to Object.defineProperties but accepts only single property at a time. To get the descriptor of an object property we can use Object.getOwnPropertyDescriptor() </p>
        ```js
           const object1 = {};
             Object.defineProperty(object1, 'property1', {
             value: 42,
             writable: false,
             });
+
+            const descriptor =  Object.getOwnPropertyDescriptor(object1, 'property1');
        ```
 
    </div>
@@ -103,6 +108,81 @@ import { Meta } from '@storybook/blocks';
        ```
 
    </div>
-  </div>
+
+    <div className="sb-section-item">
+      <h4 className="sb-section-item-heading">Object.entries()</h4>
+       <p className="sb-section-item-paragraph">Returns array of [key, value] pair of object</p>
+       ```js
+              const object1 = {
+                     a: 'somestring',
+                     b: 42,
+                };
+            for (const [key, value] of Object.entries(object1)) {
+                    console.log(`${key}: ${value}`);
+                }
+
+           // other use case is converting object to map
+           const obj = { foo: "bar", baz: 42 };
+           const map = new Map(Object.entries(obj));
+           console.log(map); // Map(2) {"foo" => "bar", "baz" => 42}
+           ```
+
+     </div>
+
+     <div className="sb-section-item">
+      <h4 className="sb-section-item-heading">Object.freeze()</h4>
+       <p className="sb-section-item-paragraph">Makes existing properties non-writable, non-configurable and also we can not add/delete Property to object. Also to check if a object is forzen or not use Object.isFrozen()</p>
+       ```js
+                const obj = { prop: 42,};
+                Object.freeze(obj);
+                obj.prop = 33; // Throws an error in strict mode otherwise does nothing to prop
+                console.log(obj.prop); // Expected output: 42
+                   Object.isFrozen(obj) //true
+           ```
+
+     </div>
+
+     <div className="sb-section-item">
+      <h4 className="sb-section-item-heading">Object.seal()</h4>
+       <p className="sb-section-item-paragraph">makes existing properties non-configurable and also we can not add/delete Property to object, but we can update existing property. Similary to check whether a object is sealed or not use Object.isSealed() </p>
+       ```js
+               const object1 = {
+                property1: 42,
+                };
+
+                Object.seal(object1);
+                object1.property1 = 33;
+                console.log(object1.property1);
+                // Expected output: 33
+
+                delete object1.property1; // Cannot delete when sealed
+                console.log(object1.property1);
+                // Expected output: 33
+
+                   Object.isSealed(object1) // true
+           ```
+     </div>
+
+     <div className="sb-section-item">
+      <h4 className="sb-section-item-heading">Object.preventExtensions()</h4>
+       <p className="sb-section-item-paragraph">New property can not be added to object, existing props can be updated or deleted. Also to check whether an object is preventExtensions or ot we can use Object.isExtensible() </p>
+       ```js
+          const obj = {
+                name: 'abhilash',
+                age: 32,
+            };
+            Object.preventExtensions(obj);
+            obj.name = 'vicky';
+            console.log(obj);
+            obj.hobby = 'swimming'; // will not add prop
+            console.log(obj);
+            delete obj.age; // will delete age
+
+            Object.isExtensible(obj) // true
+           ```
+     </div>
+
+ </div>
 
 </div>
+```
