@@ -1,0 +1,60 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="JS Theory" />
+
+<div className="sb-container">
+  <div className='sb-section-title'>
+    # JS Theory
+  </div>
+
+    <div className="sb-section">
+
+   <div className="sb-section-item">
+      <h4 className="sb-section-item-heading">Who developed JS & when?</h4>
+       <p className="sb-section-item-paragraph">Developed by Brendan Eich, he is an American computer programmer for @ Ntescape communication corporation in 1995, the purpose was to make the web pages dynamic. It was originally known as Mocha then Livescript finally JS (may name licencing issues). It was developed about in 10 days. Its name JavaScript was a marketing statergy by Netscape to gain some JAVA's popularity.  </p>
+   
+       <h4 className="sb-section-item-heading">Why Ecmascript?</h4>
+       <p className="sb-section-item-paragraph">After the devlopment of JS, Microsoft developed their own scripting language called JScript(typical MS reverse engineered JavaScript). So Netscape went to Europian Computer Manufactur's Association(ECMA) for setting standards for browser scriptting lang and by 1997 first version of ECMAScript was released. </p>
+   
+       <h4 className="sb-section-item-heading">Definition of JS?</h4>
+       <p className="sb-section-item-paragraph">Single threaded, loosly typed, garbage collected, interpreted or JIT compiled, prototype based, dynamic programming lang with non-blocking event loop. (hahah.....Inspired by Chatur from 3 idiots)</p>
+   
+       <h4 className="sb-section-item-heading">Explain Different ways you can create objects in JS?</h4>
+       <p className="sb-section-item-paragraph">
+       <ul>
+       <li>Object literal (=`{}`)</li>
+       <li>Object.create()</li>
+       <li>new Object() or  Object()</li>
+       <li>Object.assign()</li>
+       <li>Function Constructor (using new keyword)</li>
+       <li>Classes (using new keyword)</li>
+       <li>Object.defineProperties() or Object.defineProperty()</li>
+       </ul>
+       </p>
+
+        <h4 className="sb-section-item-heading">Primitive Datatypes in JS?</h4>
+       <p className="sb-section-item-paragraph">
+        <ul>
+        <li>string</li>
+        <li>number</li>
+        <li>boolean</li>
+        <li>null (Note typeof null = object, even though its a primitive value cause object is derived form null)</li>
+        <li>undefined</li>
+        <li>symbol</li>
+        </ul>
+       </p>
+
+       <h4 className="sb-section-item-heading">What is sourcemap?</h4>
+       <p className="sb-section-item-paragraph">
+        <ul>
+        <li>source map are mapping files which keeps the links between budled files(build or dist mostly in case of frontend) and original files(development files)</li>
+        <li>usually when we debug files the debugger uses source map files to establish a link between original file and bundled files (Not entirly sure but I think the webpack used to have sourcemaps in older react version)</li>
+        <li>The sourcemaps files are configurable from the bundlers scripts - whether to generate it or not, destination folder etc(vite config, webpack config etc)</li>
+        <li>This files are also useful in production bug of frontend - for this we have to configure analytics tools like firebase or sentry and provide them the sourcemap file.</li>
+        </ul>
+       </p>
+
+   </div>
+   </div>
+
+</div>
