@@ -27,6 +27,22 @@ import { Meta } from '@storybook/blocks';
 
    </div>
 
+     <div className="sb-section-item">
+      <h4 className="sb-section-item-heading">Object.fromEntries()</h4>
+       <p className="sb-section-item-paragraph">transforms a list of key-value pairs into an object, specially useful when converting Map's to object</p>
+       ```js
+       const entries  = Object.fromEntries([['abhilash', 'virat']])
+        //{abhilash: 'virat'}
+        const entries1 = new Map([
+                        ['foo', 'bar'],
+                        ['baz', 42],
+                    ]);
+
+        const obj = Object.fromEntries(entries1);
+       ```
+
+   </div>
+
     <div className="sb-section-item">
       <h4 className="sb-section-item-heading">Object.defineProperties()</h4>
        <p className="sb-section-item-paragraph">defines new or modifies existing properties directly on an object, returning the object. Also The Object.getOwnPropertyDescriptors() static method returns all own property descriptors of a given object.</p>
