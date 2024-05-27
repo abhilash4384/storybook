@@ -1,0 +1,190 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Promises" />
+
+<div className="sb-container">
+  <div className='sb-section-title'>
+    # Promises
+  </div>
+ <div className="sb-section">
+    <div className="sb-section-item">
+
+
+ <h4 className="sb-section-item-heading">What is Promise?</h4>
+  <p className="sb-section-item-paragraph">The Promise object represents the eventual completion (or failure) of an asynchronous operation and its resulting value.
+    The promise is in one of the 3 states only - pending, fullfilled, rejected</p>
+
+   <h4 className="sb-section-item-heading">Promise() Constructor</h4>
+    <p className="sb-section-item-paragraph">
+    The Constructor creates Promise object primarliy used for wrapping callbacks (API's, setTimeout, file read write operation)
+    Note: Promise() can only be constructed with new. Attempting to call it without new throws a TypeError.
+    By desgin Promise constructor expects a callback function which is having 2 parameters generally know as resolve, reject (both functions).
+    Note: Promise can only be resolved/rejected once so if a single promise has 2 or more resolve or rejects which ever comes first will be the result of promise
+    Note: Whenever you write promise in global context (i.e plain file) and even if you do not call the .then (or catch) method the promise will still be exicuted
+    </p>
+    ```js
+    const promise = new Promise((resolve, reject) => {
+      console.log('Inside promise');
+      resolve('success');
+      console.log('after promise');
+      reject('Error'); // has no effect as promise is already resolved but its not an error
+    });
+
+    promise
+      .then((data) => {
+        console.log('Data = ', data);
+        return 'abhilash';
+      })
+      .catch((err) => console.log('Error = ', err));
+
+    // you can call same promise multiple times
+    promise
+      .then((data) => {
+        console.log('Data = ', data);
+        return 'abhilash'; // and pass the returned result to next promise
+      })
+      .then((data) => console.log('next then = ', data))
+      .catch((err) => console.log('Error = ', err));
+    ```
+
+ <h4 className="sb-section-item-heading">Promise usage for API calling without fetch or axios (defacto way)</h4>
+
+```js
+const promise = new Promise((resolve, reject) => {
+  const xhr = new XMLHttpRequest();
+  xhr.open('get', 'https://jsonplaceholder.typicode.com/todos/1');
+  xhr.onerror = () => reject(xhr.statusText);
+  xhr.onload = () => resolve(xhr.responseText);
+  xhr.send();
+  console.log('request send!');
+});
+
+promise
+  .then((data) => console.log('Data = ', data))
+  .catch((err) => console.log('Error = ', err));
+```
+
+   <h4 className="sb-section-item-heading">Promise.all()</h4>
+    <p className="sb-section-item-paragraph">Expectes an array of promises(including empty iterable i.e non promise normal values) as an argument and will be fullfilled when all of the promises are fullfilled
+    but if any of the promise gets rejected it stops and returns the rejected promise ignoring all other promises.
+    Another thing to remember is that even if the other promises are successfully resolved we still not have access to them untill all the promises are resolved successfully
+    The order of the promises is maintained in the result i.e 1st promise result will be at 0th index and next at 1...so on
+    Note: output of the Promise.all() is single promise</p>
+
+    ```js
+    const promise1 = Promise.resolve(3);
+    const promise2 = 42;
+    const promise3 = new Promise((resolve, reject) => {
+      setTimeout(resolve, 4000, 'foo');
+    });
+
+    Promise.all([promise1, promise2, promise3]).then((values) => {
+      console.log(values);
+    });
+    ```
+
+ <h4 className="sb-section-item-heading">Promise.allSettled()</h4>
+  <p className="sb-section-item-paragraph">Similar to Promise.all only difference is it will not discard other promises if any one of them fails as the name suggests it will return response of all promises whether they are rejected or fullfilled
+  Note: replce allSettled with all to see the difference</p>
+
+    ```js
+    const promise1 = Promise.resolve(3);
+    const promise2 = 42;
+    const promise3 = new Promise((resolve, reject) => {
+      setTimeout(reject, 4000, 'foo');
+    });
+
+    Promise.allSettled([promise1, promise3, promise2]).then((values) => {
+      console.log(values);
+    });
+    ```
+
+ <h4 className="sb-section-item-heading">Promise.any()</h4>
+  <p className="sb-section-item-paragraph">It also accepts array of promises & returns the first successfull resolved promise response
+  If all the promises failed then the error will be aggregated error as `AggregateError: All promises were rejected`
+  Note: Unlike Promise.all() & Promise.allSettled() it does not return array of result rathar a single result is returned</p>
+
+  ```js
+  const promise1 = Promise.reject(0);
+  const promise2 = new Promise((resolve) => setTimeout(resolve, 5000, 'quick'));
+  const promise3 = new Promise((resolve) => setTimeout(resolve, 500, 'slow'));
+
+  const promises = [promise1, promise2, promise3];
+
+  Promise.any(promises).then((value) => console.log(value));
+  // Expected output: "slow"
+  ```
+
+ <h4 className="sb-section-item-heading">Promise.race()</h4>
+  <p className="sb-section-item-paragraph">Similar to Promise.any() but it returns first result of promise whether it resolves or reject</p>
+
+    ```js
+    const promise1 = Promise.reject(3);
+    const promise2 = Promise.resolve(10);
+    const promise3 = new Promise((resolve, reject) => {
+      setTimeout(reject, 4000, 'foo');
+    });
+
+    Promise.race([promise3, promise1, promise2]).then((values) => {
+      console.log(values);
+    });
+    ```
+
+ <h4 className="sb-section-item-heading">Promise.reject()</h4>
+ <p className="sb-section-item-paragraph">Static method that rejects with given reason</p>
+
+ <h4 className="sb-section-item-heading">Promise.resolve()</h4>
+ <p className="sb-section-item-paragraph">Static method that resolves with given reason</p>
+
+ <h4 className="sb-section-item-heading">Promise.withResolvers()</h4>
+  <p className="sb-section-item-paragraph">The Promise.withResolvers() static method returns an object containing a new Promise object and two functions to resolve or reject it.
+  This may enable some more advanced use cases, such as when reusing them for recurring events, particularly with streams and queues.
+  Note: New method as of my testing not avilable in nodejs but avilable in browser.</p>
+
+    ```js
+    const { resolve, reject, promise } = Promise.withResolvers();
+
+    resolve('I got resolved');
+    reject('I got rejected');
+
+    promise
+      .then((data) => {
+        console.log('resolve = ', data);
+      })
+      .catch((err) => console.log('rejected = ', err));
+    ```
+
+ <h4 className="sb-section-item-heading">Instace Methods</h4>
+  <p className="sb-section-item-paragraph">Promise.prototype.catch(), Promise.prototype.finally() & Promise.prototype.then()
+  Note that all of the instace method again returns us the new promise we can chain them again & again (see the example below)
+  We can call then method on catch and vice versa, also call then after then(method chaining). If multiple catch statements are followed by one another the first one that catchs error only that will execute rest of the catch blocks ignored.</p>
+
+    ```js
+    const p1 = new Promise((resolve, reject) => {
+      reject('error');
+    });
+
+    p1.then((value) => {
+      console.log(value); // "Success!"
+      throw new Error('oh, no!');
+    })
+      .catch((e) => {
+        console.error(e.message); // "oh, no!"
+      })
+      .catch((e) => console.log('again in catch = ', e)) // this will not execute
+      .then(
+        () => console.log('after a catch the chain is restored'), // "after a catch the chain is restored"
+        () => console.log('Not fired due to the catch')
+      )
+      .finally();
+    ```
+
+ <h4 className="sb-section-item-heading">Gotchas</h4>
+
+  ```js
+  Promise.resolve(1).then(2).then(console.log); // output: 1 remeber if we do not return anthing from then the first thens result will be forwarded
+  Promise.reject(1).then(2, 2).then(console.log, console.log); // 1 same here
+  ```
+</div>  
+</div>  
+</div>
