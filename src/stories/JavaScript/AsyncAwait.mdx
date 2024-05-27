@@ -1,0 +1,65 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Async Await" />
+
+<div className="sb-container">
+  <div className='sb-section-title'>
+    # Async Await
+  </div>
+
+<div className="sb-section">
+    <div className="sb-section-item">
+      <h4 className="sb-section-item-heading">What happen if we apply async to normal function?</h4>
+      <p className="sb-section-item-paragraph">The function will return us promise, Note: When explicitly returning a promise, such as those returned by Fetch or axios, the async function will not wrap it in another promise.</p>
+        ```js
+            const sayMyName = async () => {
+              console.log('say my name');
+              return 'Abhilash';
+            };
+
+            sayMyName().then(console.log);
+        ```
+
+        <h4 className="sb-section-item-heading">What is await ?</h4>
+        <p className="sb-section-item-paragraph">The await operator is used to wait for a Promise and get its fulfillment value. It can only be used inside an async function or at the top level of a module.</p>
+
+        <h4 className="sb-section-item-heading">How does asyn await work?</h4>
+        <p className="sb-section-item-paragraph">Usually async await are used to wrap promises(fetch/axios/setTimeout etc).</p>
+          <ul>
+          <li>The async function exicutes like a normal function in the call stack of event loop </li>
+          <li>But as soon as the await operator encounterd the function is removed from call stack by suspending the exicution </li>
+          <li>where it is handed over to browser API's to process further </li>
+          <li>the function is then pushed on to priority queue (once it is ready) </li>
+          <li>As soon as the main thread sees that call stack is free the function is again brought back into call stack and resumed form where it has been suspended before (basically event loop process happens here)</li>
+          </ul>
+        <p className="sb-section-item-paragraph">Note: This is the main reason the main thread is not blocked in case of asyc await and we can continue to do other operations in browser such as click or scroll etc</p>
+            ```js
+            const promise1 = () =>
+              new Promise((resolve) => {
+                setTimeout(() => {
+                  resolve('Promise 1');
+                }, 5000);
+              });
+
+            const promise2 = () =>
+              new Promise((resolve) => {
+                setTimeout(() => {
+                  resolve('Promise 2');
+                }, 10000);
+              });
+
+            async function fun() {
+              console.log('First');
+              const res1 = await promise1();
+              console.log(res1);
+              console.log('Second');
+              const res2 = await promise2();
+              console.log(res2);
+              console.log('Third');
+            }
+
+            fun();
+            ```
+        </div>
+      </div>
+</div>

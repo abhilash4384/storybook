@@ -1,0 +1,53 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Closures" />
+
+<div className="sb-container">
+  <div className='sb-section-title'>
+    # Closures
+  </div>
+
+    <div className="sb-section">
+        <h4 className="sb-section-item-heading">What is Closure?</h4>
+          <p className="sb-section-item-paragraph">A closure is the combination of a function bundled together (enclosed) with references to its surrounding state (the lexical environment). In other words, a closure gives you access to an outer function's scope from an inner function. </p>
+          ```js
+          const circleHelper = (r) => {
+                const PI = 3.14;
+                // use chrome debug tools as of my testinig firefox does not have closure section in devtools
+                return {
+                    printArea: () => {
+                        console.log('area is = ', PI * r * r);
+                    },
+                    printCircumference: () => {
+                        console.log('Circumferance is = ', 2 * PI * r);
+                    },
+                };
+            };
+
+            const { printArea, printCircumference } = circleHelper(10);
+            printArea();
+            printCircumference();
+          ```
+
+        <h4 className="sb-section-item-heading">Advantages?</h4>
+        <p className="sb-section-item-paragraph">
+        <ul>
+            <li>To create a private variable i.e like in above example PI cant be changed so it provides a level encapsulation</li>
+            <li>Function factories i.e functions are generated dynamically based on input to higer order function</li>
+            <li>Useful when writing some memoization related codes</li>
+        </ul>
+        </p>
+
+        <h4 className="sb-section-item-heading">Disdvantages?</h4>
+        <p className="sb-section-item-paragraph">
+        <ul>
+            <li>Memory consumption: as the refrance to outer variable is still alive it not properly implemented can cause memory leaks</li>
+            <li>Can cause performance overhead specaially in case of deeply nested closures</li>
+            <li>Can be difficult to debug</li>
+            <li>code redability is difficult to guess the value of closures</li>
+        </ul>
+        </p>
+
+    </div>
+
+</div>

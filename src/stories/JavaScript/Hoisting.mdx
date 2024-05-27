@@ -1,0 +1,60 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Hoisting" />
+
+<div className="sb-container">
+  <div className='sb-section-title'>
+    # Hoisting
+  </div>
+
+    <div className="sb-section">
+        <h4 className="sb-section-item-heading">What is Hoisting?</h4>
+          <p className="sb-section-item-paragraph">JavaScript Hoisting refers to the process whereby the interpreter appears to move the declaration of functions, variables, classes, or imports to the top of their scope, prior to execution of the code. </p>
+          <ul>
+            <li>In JS, before the code is executed, the variables get initialized to undefined.</li>
+            <li>Arrow functions enact as variables and get "undefined" during the memory creation phase while functions(function statement or definition) actually get run.</li>
+            <li>Whenever a JS program is run, a global execution block is created, which comprises of 2  phases: 1. Memory creation(this is the root cause of hoisting) and 2.Code execution.</li>
+            <li>We assume Let & Const are not hoisted but they also get hoisted in global scope but as they are maintained in different memory section (can be called Variable scope) than var's which are in (lexical scope) we do not have access to it </li>
+          </ul>
+
+          ```js
+          // in global scope
+          console.log(b); // undefined
+          console.log(c); // Uncaught ReferenceError: c is not defined
+          console.log(a); // Uncaught ReferenceError: Cannot access 'a' before initialization
+          let a = 5;
+          var b = 10;
+          ```
+
+        <h4 className="sb-section-item-heading">What is temporal dead zone?</h4>
+        <p className="sb-section-item-paragraph">
+        <ul>
+            <li>A variable declared with let, const, or class is said to be in a "temporal dead zone" (TDZ) from the start of the block until code execution reaches the place where the variable is declared and initialized.</li>
+            <li>As the let, const or class are maintained in different memory context we are not able to access them untill we reach to their declaration this phenomenon is temporal dead zone</li>
+            <li>Use chrome devtools their you can see the hoisting of let and const we can observe that the error is different for the let const vars which are avilable somewhere in the code below from the variables which are not at all defined</li> 
+        </ul>
+          ```js
+           {
+            // in global scope
+            console.log(b); // undefined
+            console.log(c); // Uncaught ReferenceError: c is not defined
+            console.log(a); // Uncaught ReferenceError: Cannot access 'a' before initialization
+            var b = 10;
+            let a = 5;
+          }
+          ```
+        </p>
+
+        <h4 className="sb-section-item-heading">Disdvantages?</h4>
+        <p className="sb-section-item-paragraph">
+        <ul>
+            <li>Memory consumption: as the refrance to outer variable is still alive it not properly implemented can cause memory leaks</li>
+            <li>Can cause performance overhead specaially in case of deeply nested closures</li>
+            <li>Can be difficult to debug</li>
+            <li>code redability is difficult to guess the value of closures</li>
+        </ul>
+        </p>
+
+    </div>
+
+</div>
