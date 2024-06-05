@@ -1,0 +1,65 @@
+# Throttle
+
+## Throttle Explained in JS
+Throttling is a technique used to limit the rate at which a function is called. 
+Throttling transforms a function such that it can only be called once in a specific 
+interval of time. The most practical use case that we can apply throttle that I can think of 
+is sniper fire in call of duty game - we are only allowed `one` gun fire in (usually 1.5 sec) 
+specific time.
+
+## Create a Throttle function 
+
+Copy and paste below HTML into a file -  
+```html
+  <body>
+     <input type="text" name="searchbox" id="searchbox" placeholder="Searchbox" autocomplete="off">
+    <div style="display: flex;">
+        <h1>Normal Behaviour:</h1>
+        <h1 style="color:brown" id="normal-text-container"></h1>
+    </div>
+
+    <div style="display: flex;">
+        <h1>Throttle Behaviour:</h1>
+        <h1 style="color:blue" id="throttle-text-container"></h1>
+    </div>
+</body>
+```
+
+Copy and paste below JS in the bottom of same file -
+```js
+    const normalTextContainer = document.querySelector('#normal-text-container');
+    const throttleTextContainer = document.querySelector('#throttle-text-container');
+    const input = document.getElementsByName('searchbox')[0];
+
+    // Here we are creating our version of throttle function
+    const throttledFunction = throttle((value) => {
+        throttleTextContainer.textContent = value;
+    }, 2000)
+    input.addEventListener('keyup', (e) => {
+        const { value } = e.target;
+        normalTextContainer.textContent = value;
+        throttledFunction(value) // here we are calling the our debounced function
+    });
+
+    /**
+     * Similar to debounce, throttle implementation should also return a function accepting ...args 
+     * In the below function the `isIntervalExpired` variable acting as a closure and by making 
+     * use of it we are keeping track if there has been `interval` amount of delay since the last time 
+     * function got invoked. 
+     * 
+    **/
+    function throttle(cb, interval = 1000) {
+        let isIntervalExpired = true;
+        return function (...args) {
+            if (isIntervalExpired) {
+                cb(...args);
+                isIntervalExpired = false;
+                setTimeout(() => {
+                    isIntervalExpired = true;
+                }, interval)
+            }
+        }
+    }
+```
+
+
