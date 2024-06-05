@@ -1,0 +1,73 @@
+# Debounce
+
+## Debounce Explained in JS
+Debounce is a technique in which, if a series of events are occuring in certain time then we Delay
+the execution of a function and act on only the last occurenece of event. Most common real world example
+would be autocompletes that makes constant network calls on each keystroke.
+
+## Create a Debounce function 
+
+Copy and paste below HTML into a file -  
+```html
+  <body>
+    <input type="text" name="searchbox" id="searchbox" placeholder="Searchbox" autocomplete="off">
+    <div style="display: flex;">
+        <h1>Normal Behaviour:</h1>
+        <h1 style="color:brown" id="normal-text-container"></h1>
+    </div>
+
+    <div style="display: flex;">
+        <h1>Debounce Behaviour:</h1>
+        <h1 style="color:blue" id="debounce-text-container"></h1>
+    </div>
+</body>
+```
+
+Copy and paste below JS in the bottom of same file -
+```js
+     const input = document.getElementById('searchbox');
+        const normalTextElement = document.getElementById('normal-text-container');
+        const debounceTextElement = document.getElementById('debounce-text-container')
+        /**
+         * Creating debouncedFunction outside of event listner is very important if we do inside
+         * then every time new function will be created which will not work as expected
+         * Basically create immutable refrance of debounced function 
+        **/
+        const debouncedFunction = debounce(functionToBeDebounced, 3000);
+        input.addEventListener('keyup', function (e) {
+            const { value } = e.target;
+            normalTextElement.textContent = value;
+            debouncedFunction(value); // here we are calling the our debounced function
+        })
+
+        function functionToBeDebounced(val) {
+            console.log('Debounce = ', val) // you can trace here how many time the function got called
+            debounceTextElement.textContent = val;
+        }
+
+        function debounce(cb, interval = 1000) {
+            /**
+             * When creating a debounce function then remember the generic implementation should be as
+             * 1. We will be accepting a callback fucntion which needs to be debounced and optional parameter inteval
+             * 2. We also want to return the cb function back but wrapped inside of an setTimeout
+             * 3. The returning function should be able to accept any no of arguments so we will use ...rest operator here
+             * 4. Lets build: first we need a setTimeout id (timerID) outside of returning function (its basically closure)
+             *    now we will be returning a function and the first thing is clearTimeout, 
+             *    if any existing(this will be automatically handled) now lets define our setTimeout 
+             *    by storing its ref id in timerID(to be cleared on next call). 
+             *    lastly call the callback by passing spread operator
+             *   
+             **/
+            let timerID;
+            return function (...rest) {
+                clearTimeout(timerID)
+                timerID = setTimeout(() => {
+                    cb(...rest);
+                }, interval)
+            }
+        }
+
+
+```
+
+

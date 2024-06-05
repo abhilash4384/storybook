@@ -1,0 +1,174 @@
+# this
+
+## This in global space
+
+```js
+console.log(this); //window object or global object(if node js)
+```
+
+## Value of this in function statement of global space
+
+```js
+function fun() {
+  //depeds on strict or non strict mode
+  //if 'use strict' value will be undefined
+  //otherwise its a window object
+  console.log(this); //window
+}
+fun();
+```
+
+<ul>
+<li>If the value of `this` keyword is null or undefined then it will be replced with globalObject(window) in `non strict mode`</li>
+<li><b>Most important line for `this`: the value of this depends on how this is being called i.e on which object or instace variable its being called where it is being called</b></li>
+<li>But in strict mode, if we call above function as `window.fun()`, this will point to global object</li>
+</ul>
+
+## This inside arrow function of global space
+
+Whether it is strict mode or not strict mode the value of this is window object, as the arrow function's do not have their own this binding but the value of this depends upon the enclosing lexical context.
+
+```js
+'use strict';
+
+const fun = () => {
+  console.log(this); // window
+};
+
+fun();
+```
+
+## Value of this in object feat function expression
+
+```js
+const obj = {
+  name: 'abhilash',
+  print: function () {
+    console.log(this);
+  },
+};
+
+obj.print(); // abhil{name: 'abhilash', print: ƒ}
+
+const print = obj.print;
+print(); // this will print window object because its been called on global space not on any instance
+// Note: if used strict mode then insted of window it will be undefined
+
+const obj2 = {
+  name: 'vicky',
+  age: 32,
+};
+obj2.print = obj.print;
+
+obj2.print(); //{name: 'vicky', age: 32, print: ƒ}
+```
+
+<ul>
+  <li>
+    If used same object refrance then the value of this will be the
+    (current)object itself
+  </li>
+  <li>
+    If print method is assigned to some global scope variable the value will be
+    window in non strict mode or undefined in strict mode
+  </li>
+  <li>
+    If the method of 1 object is passed to other object (refacned) then `this`
+    will be the referring to passed object
+  </li>
+  <li>
+    Furthermore we can also alter the `this` with call, apply & bind method's
+  </li>
+</ul>
+
+# this inside object feat arrow function
+
+As the arrow function's dont have their on `this` the value of this depends upon enclosing lexical context in below case global context
+(Im not able to properly understand what `enclosing lexical context` means here so this inside arrow not properly understood by me).
+Note: `use strict` does not alter the behaviour here.
+
+```js
+'use strict';
+
+const obj = {
+  name: 'abhilash',
+  print: () => {
+    console.log(this); // window
+  },
+  print2: function () {
+    const innerPrint = () => {
+      console.log(this); //will print current object if called as obj.print2()
+      //because here the lexical context becomes outer function's this
+    };
+    innerPrint();
+  },
+};
+obj.print(); //window
+
+const print = obj.print;
+print(); // window
+
+const obj2 = {
+  name: 'vicky',
+  age: 32,
+};
+obj2.print = obj.print;
+
+obj2.print(); //window
+```
+
+# this inside Constructor function
+```js
+ function fun(name) {
+        this.name = name;
+        this.printName = function () {
+            console.log('this.printName = ', this, this.name); //this will point to current object
+        };
+
+        this.printNameArrow = () => {
+            console.log('this.printNameArrow = ', this, this.name); //this will point to current object
+        };
+    }
+
+    fun.prototype.getName = function () {
+        console.log('fun.prototype.getName = ', this, this.name);
+        // point to current object
+    };
+
+    fun.prototype.getNameArrow = () => {
+        console.log('fun.prototype.getNameArrow = ', this, this.name);
+        // point to window object that is why when we are adding prototype methods(pollyfills) we generally 
+        // use non arrow function 
+    };
+
+    const f = new fun('abhialsh');
+
+    f.printName(); //this will point to current object
+    f.printNameArrow(); //this will point to current object
+    f.getName(); // current object
+    f.getNameArrow(); // window object
+
+    f.printName.call({ name: 'kiara' }) // Kiara
+    
+    /**
+     * In the below statement we still point to originally constructed object refrance
+     * i.e the reason in react class based versioins we used to prefer arrow function insted of normal function
+     **/
+    f.printNameArrow.call({ name: 'kiara' }) // still original object i.e // abhilash 
+
+    f.getName.call({ name: 'kiara' }) // kiara
+    f.getNameArrow.call({ name: 'kiara' }) // window object
+```
+
+# Summary
+<ul>
+<li>In global scope `this` will point to global(window) object </li>
+<li>In global scope function(non arrow functions) `this` will point to global object</li>
+<li>But if we make use of `use strict` then in global function(non arrow functions) `this` will become undefined </li>
+<li>Basically whenever value of `this` is unknown js replaces it with global object but use of `use strict` restricts this replacement</li>
+<li>In case of arrow function in global space the value of `this` is global object irrespective of whether we use `use strict` or not</li>
+<li>In case of `object` the value of `this` depends upon how it is being called(on which object ref), where it is being called & `use strict` is being used or not</li>
+<li>`use strict` does not alter the behaviour of `this` inside of arrow function wether it is object or a function</li>
+<li>Inside constructor function value of `this` is current object </li>
+<li>The call, apply, bind does not alter the behaviour of an arrow function</li>
+</ul>
