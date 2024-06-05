@@ -130,7 +130,28 @@ import { Meta } from '@storybook/blocks';
                     <p className="sb-section-item-paragraph">The ability to pass function as an parameter
                     to other function or a returning a function is called first class function</p>
 
+                <h4 className="sb-section-item-heading">Gothchas</h4>
+                    <p className="sb-section-item-paragraph">
+                              you can call a `function` with n no of arguments without passing any argument eg:
+                            </p>
+
+                ```js
+                    function fun(name, age, address) {
+                    console.log('still called = ', name, age, address)
+                    }
+                    fun() // still called =  undefined undefined undefined
+                ```
+            
+            <p className="sb-section-item-paragraph">The length data property of a Function instance indicates the number of parameters expected by the function.</p>
+            ```js
+                function lengthCheck(a, b, c, d) {}
+                lengthCheck.length // 4
+                function restLength(...rest) {} //for rest operator length is still 0 
+                restLength.length //0 
+             ```
+
   </div>
 </div>
 </div>
+
 ````
