@@ -1,0 +1,77 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Event-Frontend" />
+
+# Event Constructor:
+The Event() constructor creates a new Event object. An event created in this way is called a synthetic event, as opposed to an event fired by the browser, and can be dispatched by a script.
+e.g `const evt = new Event('name_of_event', {bubbles: true, cancelable: false, composed: false})`
+The `composed` is for indicating whether the event will trigger listeners outside of a shadow root
+
+# Event Instance Properties:
+- bubbles, cancelable(prevetDefault()), composed(to trigger outside shadow root), 
+currentTarget(identifies the element to which the event handler has been attached.),  
+target (similar to eventTarget but differs in case of bubbling or capturing), typeof(click, mouseup etc) 
+
+# Event Instace Methods:
+preventDefault() - avoid default behviour such as opening of alert or form submit redirection etc,
+stopPropogation() - stop the event in capturing or bubbling phase.
+
+# Event Bubbling 
+- Event transferring from bottom to top, In default state the browser events are usually bubbled
+
+```html
+   <div id="outermost" style="padding: 10px; border: solid 2px; border-color: red" onclick="console.log('Outermost')">
+        Outermost
+        <div id="intermediate" style="padding: 10px; border: solid 2px; border-color: green"
+            onclick="console.log('Intermediate')">
+            Intermediate
+            <div id="innermost" style="padding: 10px; border: solid 2px; border-color: blue;"
+                onclick="console.log('Innermost')">
+                Innermost
+            </div>
+        </div>
+    </div>
+```
+
+If you click here in the innermost div logs will be - Innermost, Intermediate, Outermost
+and on intermediate div click - Intermediate, Outermost
+
+# Event Capturing
+
+In this phase the event is transferred from top to bottom
+
+```html
+<body>
+    <div id="outermost" style="padding: 10px; border: solid 2px; border-color: red">
+        Outermost
+        <div id="intermediate" style="padding: 10px; border: solid 2px; border-color: green">
+            Intermediate
+            <div id="innermost" style="padding: 10px; border: solid 2px; border-color: blue;">
+                Innermost
+            </div>
+        </div>
+    </div>
+
+</body>
+
+<script>
+    const outermost = document.getElementById('outermost')
+    const intermediate = document.getElementById('intermediate')
+    const innermost = document.getElementById('innermost')
+
+    outermost.addEventListener('click', function (event) {
+        console.log('outermost')
+    }, { capture: true })
+
+    intermediate.addEventListener('click', function (event) {
+        console.log('intermediate')
+    }, { capture: true })
+
+    innermost.addEventListener('click', function (event) {
+        console.log('innermost')
+    }, { capture: true })
+</script>
+```
+
+If you click here in the innermost div logs will be - Outermost, Intermediate, Innermost
+and on intermediate div click - Outermost, Intermediate
