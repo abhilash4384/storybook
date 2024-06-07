@@ -1,0 +1,92 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Web Workers" />
+
+<div className='sb-section-title'>
+  # Web Workers
+</div>
+
+# What is web worker?
+Web worker API allows us to run javascript code in background i.e on seprate thread(worker thread) rather than main thread. 
+A worker is an object created using a constructor (e.g. Worker()) that runs a named JavaScript file, this file contains the code that needs to be run in background. 
+So these 2 seperate file scripts communicate with each other by using `postMessage()` method and respond via `onmessage` even handler.
+The data passed to worker is copied not transferred i.e a clone of object/variable is created using `structuredClone()`
+There are 2 types of Worker 
+1. Dedicated Worker (const worker = new Worker("worker.js"))
+2. Shared Worker (const worker = new SharedWorker("worker.js"))
+Workers can call other workers.
+
+Note: Web workders can not interact with DOM, but they can do a lot of other things like api calling, accessing indexedDB, websockets etc
+
+
+# Terminating Worker
+we can also terminate worker using `workerInstace.terminate()` method (in the main script)
+
+# Dedicated Worker Example:
+Standard workers utilized by a single script, the below example runs a heavy task on worker thread and main thread is free to do whatever it wants.
+
+// index.html
+```html
+   <!DOCTYPE html>
+        <html lang="en">
+
+        <head>
+            <meta charset="UTF-8">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Web Worker Example</title>
+        </head>
+
+        <body>
+            <button onclick="sumOfNums()">CPU intensive calculation</button>
+            <button onclick="changeBackgound()">Change Background</button>
+        </body>
+        <script>
+            var worker = new Worker("./worker.js");;
+
+            function sumOfNums() {
+                if (worker) {
+                    worker.postMessage("INIT_CALCULATIONS")
+                }
+            }
+
+            worker.onmessage = function (message) {
+                console.log('Message from worker = ', message.data)
+            }
+
+            function changeBackgound() {
+                if (document.body.style.backgroundColor === "yellow") {
+                    document.body.style.backgroundColor = "red"
+                } else {
+                    document.body.style.backgroundColor = "yellow"
+                }
+            }
+        </script>
+</html>
+
+```
+
+The worker file
+```js
+self.onmessage = async function (message) {
+	console.log('Message in worker = ', message);
+	if (message.data === 'INIT_CALCULATIONS') {
+		let sum = 0;
+		for (let i = 0; i <= 9007199254; i++) sum += i;
+
+		// we can also call api's
+		const fetchData = await fetch(
+			'https://jsonplaceholder.typicode.com/todos/'
+		);
+		const apiData = await fetchData.json();
+
+		self.postMessage({ sum, apiData });
+	}
+};
+
+```
+# Shared Worker
+
+A shared worker is accessible by multiple scripts — even if they are being accessed by different windows, iframes or even workers.
+Unlike dedicated webworker shared web worker work on `port` so to send a message `sharedWorker.port.postMessage()` to respond the worker uses 
+`onconeect` event. This can be useful when we want to communicate one window to other and vice-versa usin shared worker as a mediator.
