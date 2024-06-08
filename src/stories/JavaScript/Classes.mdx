@@ -1,0 +1,223 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Class" />
+
+# Class
+
+Unlike tradional programming language classes in javascript are just sytatic suger on top of `function constructors` with some additional features.
+Classes support public, private visibility & they can be inherited from each other using `extends` keywords. Classes are consist of mainly Getter, Setter, method or field.
+Classes have either static or instace methods.
+
+## Basic class example:
+One way of declaring class:
+```js
+
+    class Rectangle {
+        constructor(height, width) {
+            this.height = height;
+            this.width = width;
+        }
+    }
+
+    const rect = new Rectangle(5, 25)
+    console.log(rect) // {height: 5, width: 25}
+    rect.height = 10;
+    console.log(rect) //{height: 10, width: 25}
+```
+
+Second Way of declaring class:
+
+```js
+ const Rectangle = class {
+        constructor(height, width) {
+            this.height = height;
+            this.width = width;
+        }
+    }
+```
+
+## Mehods 
+Methods are defined on the prototype of each class instance and are shared by all instances. 
+Methods can be plain functions, async functions, generator functions, or async generator functions.
+The instace methods are created on prototype.
+
+`Note: By default the variables are public in a class if you want to make private variable use # followd by variable name, Unlike Typescript you can not write visibility public/private in front of variables` 
+```js
+    class Person {
+        // the variables declared here are called field declarations
+        // public prop = test  modifiers such as public/private work in typescript not in javascript
+        msg = 'You are a good man🫵';
+        #secretMsg = 'Dont be tired! you can do this all day💪' // private variable
+        constructor(name) {
+            this.name = name
+        }
+
+        greet() {
+            console.log(`Hey ${this.name}, ${this.msg}`)
+        }
+
+        get secret() {
+            console.log(this.#secretMsg)
+        }
+
+        *getEmojisMsg() {
+            yield 'Eat🍇🍴';
+            yield 'Sleep😴';
+            yield 'Hardwork⚒️';
+            yield 'Repeat➿';
+        }
+
+    }
+
+    const p = new Person('Abhialsh')
+    console.log(p)
+    p.greet()
+    p.secret // Dont be tired! you can do this all day💪
+    console.log([...p.getEmojisMsg()]) //['Eat🍇🍴', 'Sleep😴', 'Hardwork⚒️', 'Repeat➿']
+    // p.#secretMsg = 'You loser!' // this will not work outside of class as its private
+```
+
+
+## Static Methods & Variables
+
+Static methods can only be accessed using className.static method name
+static method can only access static Variables
+instace methods can access static methods and staic variables both
+
+```js
+    class Person {
+        static msg = 'You are a good man✌️'
+        msg2 = 'do something good today!'
+        constructor(name) {
+            this.name = name
+        }
+
+        static greet() {
+            // console.log(msg) // msg cant be accessed directly
+            // console.log(this) // cant access instance variable 
+            console.log(this.msg) // works
+            console.log(Person.msg) // works
+        }
+
+          callStatic() {
+            console.log(Person.msg) //works
+            Person.greet() // works
+        }
+
+    }
+
+    const p = new Person('Abhialsh')
+
+    Person.greet() // 'You are a good man✌️'
+    p.callStatic() // works
+    p.greet() // will not work as greet is static method
+```
+
+## Inheritace
+
+Class does not support multiple inheritance. The car instace prototype object points to CarCompany and CarCompany to Object. 
+```js
+     class CarCompany {
+        // this class field declaration is not needed as its again being initialized in constructor
+        company = '';
+        manufacturingCountry = '';
+        constructor(company, manufacturingCountry) {
+            this.company = company;
+            this.manufacturingCountry = manufacturingCountry
+        }
+
+        static message() {
+            console.log('Drive Safe🚗')
+        }
+
+        getCompanyDetais() {
+            console.log(`The ${this.company} manufactures cars in ${this.manufacturingCountry}.`)
+        }
+
+    }
+
+    class Car extends CarCompany {
+        constructor(company, manufacturingCountry, cars) {
+            super(company, manufacturingCountry);
+            this.cars = cars
+        }
+
+        getCars() {
+            console.log(`The ${this.company} offers ${this.cars.join(', ')}`)
+        }
+
+    }
+
+    const tataCars = new Car('TATA', 'INDIA', ['Tiago', 'Altroz', 'Nexon', 'Punch'])
+    console.log(tataCars) //  {company: 'TATA', manufacturingCountry: 'INDIA', cars: ['Tiago', 'Altroz', 'Nexon', 'Punch']}
+    tataCars.getCompanyDetais(); //The TATA manufactures cars in INDIA.
+    tataCars.getCars(); // The TATA offers Tiago, Altroz, Nexon, Punch
+    CarCompany.message(); // Drive Safe🚗
+
+
+```
+
+The function constructor implmentation of above example will be as follows
+`This is how classes are created internally`
+
+
+```js
+    function CarCompany(company, manufacturingCountry) {
+        this.company = company;
+        this.manufacturingCountry = manufacturingCountry
+    }
+
+    CarCompany.message = function () {
+        // static method
+        console.log('Drive Safe🚗')
+    }
+
+    CarCompany.prototype.getCompanyDetais = function () {
+        // instace method
+        console.log(`The ${this.company} manufactures cars in ${this.manufacturingCountry}.`)
+    }
+
+    function Car(company, manufacturingCountry, cars) {
+        // in class we do super(...)
+        CarCompany.call(this, company, manufacturingCountry);
+        this.cars = cars
+    }
+
+    Car.prototype = CarCompany.prototype;
+    Car.prototype.getCars = function () {
+        console.log(`The ${this.company} offers ${this.cars.join(', ')}`)
+    }
+
+    const tataCars = new Car('TATA', 'INDIA', ['Tiago', 'Altroz', 'Nexon', 'Punch'])
+    console.log(tataCars) //  {company: 'TATA', manufacturingCountry: 'INDIA', cars: ['Tiago', 'Altroz', 'Nexon', 'Punch']}
+    tataCars.getCompanyDetais(); //The TATA manufactures cars in INDIA.
+    tataCars.getCars(); // The TATA offers Tiago, Altroz, Nexon, Punch
+    CarCompany.message(); // Drive Safe🚗
+```
+
+## Gothchas
+The below example shows the importance of arrow functions in classes.
+
+```js
+    class CarCompany {
+
+        constructor(company, manufacturingCountry) {
+            this.company = company;
+            this.manufacturingCountry = manufacturingCountry
+        }
+        getCompanyDetais() {
+            console.log(this)
+            console.log(`The ${this.company} manufactures cars in ${this.manufacturingCountry}.`)
+        }
+    }
+
+    const tataCars = new CarCompany('TATA', 'INDIA')
+    tataCars.getCompanyDetais(); //The TATA manufactures cars in INDIA.
+    tataCars.getCompanyDetais.call({ company: 'Mahindra', manufacturingCountry: 'Japan' }) // The Mahindra manufactures cars in Japan.
+
+    const details = tataCars.getCompanyDetais
+    details() // this will throw error as this is undefined in this case
+    // all of this purging of data and refrance error can be resolved simply by converting getCompanyDetais to an arrow function
+    // this is the reason we heavily used arrow functions in older version of react(before 16.8) to avoid accidental this refrances
+
+```

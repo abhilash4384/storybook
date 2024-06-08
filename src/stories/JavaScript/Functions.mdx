@@ -81,7 +81,7 @@ import { Meta } from '@storybook/blocks';
             // calling Car() wihtout new keyword will return undefined unless we explicitly return something
             // similary if we put a return statement in between somewhere lets say before this.printDetails then the rest of the code is not included in newly created object(i.e printDetails is not avialable)
                 myCar.printDetails();
-                
+            // you can not use arrow function to create a function constructor    
                 /**
                 *  Just a note you can not call function constructors like without new keyword i.e by using call, apply or bind method in this case the output will be undefined
                 * e.g const o = Car.apply(this, 'Nexon') 
