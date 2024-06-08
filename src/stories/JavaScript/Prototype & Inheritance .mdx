@@ -1,0 +1,190 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Prototype & Inhertitance" />
+
+# Protoytype 
+
+Prototype is an object associated with functions, objects, primitive data types etc, its a meadium through which we inherit properties and methods of other objects.
+This is called prototypal inheritance. 
+
+## .prototype 
+
+- usually this property is associated with functions (not with objects if you do obj.prototype it will be `undefined`).
+- When we create a function we do have toString, call, apply & bind methods avilable on instace object that is because in `Function constructor` these properties were added on prototype of it.
+- the `.prototype` is explicitly used with function constructors
+Note: In javascript we say everything is an object because all of the things(functions, objects) etc are inherited from Object and Object is inherited from `null` and 
+it is the end of prototype chain. This is also one of the reason when we do `typeof null` it says `object` 
+
+```js 
+   function TataCars(owner) {
+        this.owner = owner;
+        this.printDetails = () => console.log(`The Tata Company is owned by ${this.owner}`)
+    }
+    TataCars.prototype.offeredCars = function () {
+        console.log('Tiago, Nexon, Altroz')
+    }
+    const o = new TataCars('Ratan Tata')
+    console.log(o.owner) // Ratan Tata
+    o.printDetails() // The Tata Company is owned by Ratan Tata
+    o.offeredCars() // Tiago, Nexon, Altroz
+
+```
+- The Arrays, primitive data type's parent classes (Number, String etc) are constructed from function constructor, that is why the pollyfills directly adds methods on prototype
+of these constructors
+- E.g I can add my custom method on Arrays 
+
+```js
+
+    Array.prototype.myReduce = function (cb, acc) {
+        let index = 0;
+        for (let num of this)
+            acc = cb(acc, num, index)
+        index++;
+        return acc
+    }
+
+    const nums = [10, 20, 30, 40]
+    const result = nums.myReduce((acc, val) => {
+        console.log(val)
+        return acc + val
+    }, 0)
+    console.log(result) // 100
+```
+
+## `__proto__`
+
+- The `__proto__` is `prototype` property added on `Object` ie `Object.prototype.__proto__`  
+- The `__proto__` exposes [[Prototype]] properties, which is a private object and allows us to modify it
+- This feature is `Deprecated` its being removed from browsers and we should try to avoid using it.
+- The modern alternative to using `__proto__` are `Object.getPrototypeOf()` & `Object.setPrototypeOf()`
+
+Example to update the proto of an object
+
+```js
+
+    const obj = {
+        name: 'abhilash',
+        __proto__: {
+            job: 'Software developer'   // way 1
+        }
+    }
+    obj.__proto__.charecter = 'Awesome' // way 2
+    console.log(obj.name, ' = ', obj.job, ' = ', obj.charecter) //abhilash  =  Software developer
+```
+
+Another example to set `null` in prototype of an object basically remove prototype object 
+
+```js
+ const obj1 = {
+        name: 'abhilash',
+        __proto__: null
+    }
+    console.log(obj1.toString())  // error as we removed the prototype object 
+```
+
+## `[[Prototype]] or <prototype>`
+
+- Its just a notation through which browser's represents the prototype of an object, its intenal proerty and its also private we can not directly change it by doing something like
+`obj[[Prototype]]`  
+- The Chrome console, edge uses [[Prototype]] to denote the object's prototype, following the spec's terms; Firefox uses `<prototype>`.
+
+## inheritance
+
+- Javascript implements inheritace by using object's, each object has internal link to another object, this linking object is basically called as prototype object 
+(accessed using .prototype or .__proto__ etc)
+- The prototype object may have link to another object, and this object prototype have link to another(e.g obj.__proto__.__proto__.__proto__)...and so on until it reaches to `null` 
+- This is called prototype chain.
+- By definition null has no prototype and acts as final link in prototype chain.
+
+
+## Object inheritace
+
+### Way 1 using __proto__
+```js
+
+const car = {
+        parent: 'Tata',
+    }
+    const cars = {
+        cars: 'Tiago, Punch, Nexon'
+    }
+    cars.__proto__ = car;
+
+    console.log(cars.parent) // Tata
+    console.log(cars.cars) // Tiago, Punch, Nexon
+```
+
+### Way 2 using Object.setPrototypeOf 
+
+This the recommended way rather than using __proto__ but changing prototype even using this method is slow and can cause performance degradation
+
+```js
+ const car = {
+        parent: 'Tata',
+    }
+    const childCars = {
+        cars: 'Tiago, Punch, Nexon',
+        message: function () { console.log(`The ${this.cars} are from ${this.parent}`) }
+    }
+    Object.setPrototypeOf(childCars, car) 
+     console.log(childCars.parent) // Tata
+    childCars.message() // The Tiago, Punch, Nexon are from Tata
+```
+
+### Way 3 using Object.create
+
+
+```js
+    const car = {
+        parent: 'Tata',
+    }
+
+    const childCars = Object.create(car);
+    childCars.cars = 'Tiago, Punch, Nexon';
+
+    console.log(car.parent, ' = ', childCars.cars) //Tata  =  Tiago, Punch, Nexon
+```
+
+Below is the Most recommended way, i.e to create a new object by setting its prototype and then adding properties on it
+
+```js
+   const parent = {
+        name: 'Tata'
+    }
+    const newObject = Object.create(parent);
+    newObject.cars = 'Tiago, Punch, Nexon'
+    console.log(`The ${newObject.name} cars are ${newObject.cars}`) // The Tata cars are Tiago, Punch, Nexon
+```
+
+## Function constructor inheritance 
+
+```js
+   function CarCompany(name) {
+        this.parentCompany = name;
+        this.printCarCompany = () => console.log(this.parentCompany)
+    }
+
+    CarCompany.prototype.OtherCompanies = function () {
+        console.log('Hyundai, Mahindra, Maruti')
+    }
+
+    function Cars(parentCompanyName, ...rest) {
+        CarCompany.call(this, parentCompanyName); // most important line for inheritance
+        this.cars = rest;
+        this.printCars = function () {
+            console.log(`The ${this.parentCompany} offers ${this.cars.join(', ')}`)
+        }
+    }
+
+    const carsObj = new Cars('Tata', 'Tiago', 'Punch', 'Nexon');
+    carsObj.printCarCompany(); // Tata
+    carsObj.printCars(); // The Tata offers Tiago, Punch, Nexon
+    carsObj.OtherCompanies() // Note that: the prototype methods are not inherited in this way, so this line will throw an error
+
+    /**
+     * If you want to use prototype of Parent i.e CarCompany you will have to do following thing 
+     * Cars.prototype = CarCompany.prototype
+     * note that because this is function you cant use Object.setPrototypeOf or Object.create methods
+    */
+
+```

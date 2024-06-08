@@ -2,21 +2,23 @@ import { Meta } from '@storybook/blocks';
 
 <Meta title="Event-Frontend" />
 
-# Event Constructor:
+# Event's in Frontend 
+
+## Event Constructor:
 The Event() constructor creates a new Event object. An event created in this way is called a synthetic event, as opposed to an event fired by the browser, and can be dispatched by a script.
 e.g `const evt = new Event('name_of_event', {bubbles: true, cancelable: false, composed: false})`
 The `composed` is for indicating whether the event will trigger listeners outside of a shadow root
 
-# Event Instance Properties:
+## Event Instance Properties:
 - bubbles, cancelable(prevetDefault()), composed(to trigger outside shadow root), 
 currentTarget(identifies the element to which the event handler has been attached.),  
 target (similar to eventTarget but differs in case of bubbling or capturing), typeof(click, mouseup etc) 
 
-# Event Instace Methods:
+## Event Instace Methods:
 preventDefault() - avoid default behviour such as opening of alert or form submit redirection etc,
 stopPropogation() - stop the event in capturing or bubbling phase.
 
-# Event Bubbling 
+## Event Bubbling 
 - Event transferring from bottom to top, In default state the browser events are usually bubbled
 
 ```html
@@ -36,7 +38,7 @@ stopPropogation() - stop the event in capturing or bubbling phase.
 If you click here in the innermost div logs will be - Innermost, Intermediate, Outermost
 and on intermediate div click - Intermediate, Outermost
 
-# Event Capturing
+## Event Capturing
 
 In this phase the event is transferred from top to bottom
 
@@ -75,3 +77,21 @@ In this phase the event is transferred from top to bottom
 
 If you click here in the innermost div logs will be - Outermost, Intermediate, Innermost
 and on intermediate div click - Outermost, Intermediate
+
+
+## Creating a cusotom event:
+`detail` property of the CustomEvent interface returns any data passed when initializing the event.
+
+```js
+   const trainSignal = new CustomEvent('mysignal', {
+        detail: {
+            // here we can pass any data we want
+            trainStatus: 'On Time',
+            mysignal: 'Signal Announcement'
+        }
+    });
+    const element = document.createElement('button');
+    element.addEventListener('mysignal', (e) => console.log('Event details = ', e.detail));
+
+    element.dispatchEvent(trainSignal)
+```
