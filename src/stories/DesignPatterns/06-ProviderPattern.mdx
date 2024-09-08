@@ -1,0 +1,18 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="DesignPatterns/06-ProviderPattern" />
+
+# Provider Pattern
+
+In some cases, we want to make available data to many (if not all) components in an application. Although we can pass data to components using props, this can be difficult to do if almost all components in your application need access to the value of the props.
+
+example. React's context API
+
+# Pros
+
+The Provider pattern/Context API makes it possible to pass data to many components, without having to manually pass it through each component layer(props drilling).
+Keeping some sort of global state is made easy with the Provider pattern, as we can give components access to this global state.
+
+# Cons
+
+In some cases, overusing the Provider pattern can result in performance issues. All components that consume the context re-render on each state change.

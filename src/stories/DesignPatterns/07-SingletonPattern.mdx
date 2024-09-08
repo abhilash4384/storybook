@@ -1,0 +1,43 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="DesignPatterns/07-SingletonPattern" />
+
+# Singleton Pattern
+
+Singletons are classes which can be instantiated once, and can be accessed globally. This single instance can be shared throughout our application, which makes Singletons great for managing global state in an application.
+
+```js
+let instance;
+let counter = 0;
+
+class Counter {
+  constructor() {
+    if (instance) {
+      throw new Error("You can only create one instance!");
+    }
+    instance = this;
+  }
+
+  getInstance() {
+    return this;
+  }
+
+  getCount() {
+    return counter;
+  }
+
+  increment() {
+    return ++counter;
+  }
+
+  decrement() {
+    return --counter;
+  }
+}
+
+const singletonCounter =  Object.freeze(new Counter());
+
+export default singletonCounter;
+
+```
+

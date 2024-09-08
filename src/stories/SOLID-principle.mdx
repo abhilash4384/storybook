@@ -1,0 +1,51 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="SOLID desing principle" />
+
+# SOLID design principle
+
+To write clean code we should know about these principles.
+
+## Single Responsibility Principle (SRP):
+It states that a class(or function/module) should have only one reason to change.
+example: Lets say we have a IncomeTaxCalculator class, which accepts salary and investment details in constructor and returns us the applicable tax from method getTotalTax().
+Now lets say the formula to calculate tax in `getTotalTax` works properly for users who do not have any investment but fails in case of users who do have investment.
+To support this we add some more fuctionality to this method but still it does not work for users who have choosen new tax regima. 
+So our method `getTotalTax()` keeps on changing from users to user and condition to condition....
+
+This is what the SRP says, in simple words if changing one fuctionality works for some and not for others then that is breaking the rule of SRP. 
+The solution is to create subclasses or modules or functions so that the `getTotalTax()` works correctly for all of them
+
+usually this will happen with utils functions because they are building blocks for other functions.
+
+
+## Open Closed Principles:
+
+It states that a class should be open for extension but closed for modification.
+
+example: Lets say we are designing a calculator class which returns us the formatted output(Your result is = 25), it does addtion and substraction but tomorrow suppose someone wants multiplication
+we modify the class to do multiplication same is for division and much more. In this case we can keep on modifying the class which breaks the Open Closed principle.
+
+As a solution we can design individual classed for addition, multiplication, substraction etc and pass that to calculator class and then it will provide us the formatted output. 
+
+Basically depending upon the input we should not keep on changing the core functionality insted we should design program in a way that it can accept any intput and provide us the desired result.
+
+## Liskova Substitution Principle
+
+The principle states that we should in case of inheritance we should be able to replace actual class instance with the subclass instance.
+
+i.e if we are not able to use child class refrance to parent class that means there is something wrong with our intheritance
+
+
+## Interface Segregation Principle
+
+It states that no code should be forced to depend on methods it does not use. 
+Basically insted of a giant interface we should have small interaces so that if we do not need something we can omit that interface.
+
+## Dependency Inversion Principle
+
+It states that high level modules should not depend upon lower lever modules. 
+- both should depend on abstractions 
+
+example: If a class A depends on Class B and tomorrow soething changed in Class B then class A will fail. So the idea is
+we should have a Abstract class or interface which should have common functionality for A and B this way A will not depend on B insted A and B will depend on Abstrace class or interface

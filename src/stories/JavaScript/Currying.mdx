@@ -1,0 +1,45 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="JavaScript/Currying" />
+
+# Currying
+
+Currying is a transformation of functions that translates a function from callable as f(a, b, c) into callable as f(a)(b)(c) .
+Another definition could be calling a function in series.
+
+Here we see closure and higher order function implementation in combination.
+
+## Basic class example:
+One way of declaring class:
+```js
+    function add(a) {
+        return function(b) {
+            return function(c) {
+                return a+b+c;
+            }
+        }
+    }
+
+    add(2)(3)(4)
+    /* we can also write above function as*/
+    const addition = (a) => (b) => (c) => a+b+c;
+```
+
+### Popular interview question on Currying
+Q: Add(1)(2)(3)…(n)() in Javascript 
+
+```JS
+function add(param1) {
+	return function (param2) {
+		if (param2) {
+			return add(param1 + param2);
+		}
+		return param1;
+	};
+}
+
+const result = add(5)(4)(3)(2)();
+
+console.log(result);
+
+```

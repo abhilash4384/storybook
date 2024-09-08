@@ -1,0 +1,55 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="DesignPatterns/02-FactoryPattern" />
+
+<div className="sb-container">
+  <div className='sb-section-title'>
+    # 02-FactoryPattern
+  </div>
+
+  <div className="sb-section">
+      <div className="sb-section-item">
+        <p>With the factory pattern we can use factory functions in order to create new objects. A function is a factory function when it returns a new object without the use of the new keyword!</p>
+        <a href="https://www.patterns.dev/vanilla/factory-pattern"  target="_blank" className="sb-section-item-paragraph">Refrance documentation..</a>
+      </div>
+
+       <div className="sb-section-item">
+        <p>Say that we need many users for our application. We can create new users with a firstName, lastName, and email property. The factory function adds a fullName property to the newly created object as well, which returns the firstName and the lastName.</p>
+        ```js
+        const createUser = ({ firstName, lastName, email }) => ({
+          firstName,
+          lastName,
+          email,
+          fullName() {
+            return `${this.firstName} ${this.lastName}`;
+          }
+        });
+
+        const user1 = createUser({
+          firstName: "John",
+          lastName: "Doe",
+          email: "john@doe.com"
+        });
+
+        const user2 = createUser({
+          firstName: "Jane",
+          lastName: "Doe",
+          email: "jane@doe.com"
+        });
+
+        console.log(user1);
+        console.log(user2);
+        ```
+      </div>
+
+      <div className="sb-section-item">
+       <h4 className="sb-section-item-heading">Pros</h4>
+        <p>The factory pattern is useful when we have to create multiple smaller objects that share the same properties. A factory function can easily return a custom object depending on the current environment, or user-specific configuration.</p>
+      </div>
+
+       <div className="sb-section-item">
+       <h4 className="sb-section-item-heading">Cons</h4>
+        <p>In JavaScript, the factory pattern isn’t much more than a function that returns an object without using the new keyword. However, in many cases it may be more memory efficient to create new instances instead of new objects each time. (because the instance method on class are created once on prototype and shared by all)</p>
+      </div>
+  </div>
+</div>
