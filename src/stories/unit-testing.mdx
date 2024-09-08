@@ -1,0 +1,213 @@
+import { Meta } from '@storybook/blocks';
+import TestingImage from '../assets/react-unit-testing-cheat-sheet.png';
+
+<Meta title="Unit testing" />
+
+# Unit tests
+
+Focus is on testing the individual piece of code
+
+# What is Jest
+
+Jest is a javascript testing framework. Jest is test runner that finds tests, runs the testsm determines whether the tests passed or failed and reports it back
+
+# What is React Testing library(RTL)
+
+Javascript testing utility that provides virtual DOM for testing react components. The core library is DOM testing library,
+the RTL is a wrapper around this library.
+
+# test(name, fn, timeout)
+name: name of the test
+fn: function with test
+timout: how long to wait before aborting the test default is 5 seconds
+
+```JS
+
+function sum(a, b) {
+  return a + b;
+}
+test('adds 1+2', function() {
+    expect(sum(1+2)).toBe(3)
+})
+```
+
+## Mathers
+1. toBe(): toBe uses Object.is to test exact equality
+2. toEqual(): to check the value of an object. toEqual ignores object keys with undefined properties, undefined array items, array sparseness, or object type mismatch. To take these into account use toStrictEqual instead.
+3. not: the opposite matcher,  expect(a + b).not.toBe(0);
+4. toBeNull(): mathes only null
+5. toBeUndefined()
+6. toBeDefined(): opposite of undefined
+7. toBeTruthy()
+8. toBeFalsy()
+
+```js
+test('null', () => {
+  const n = null;
+  expect(n).toBeNull();
+  expect(n).toBeDefined();
+  expect(n).not.toBeUndefined();
+  expect(n).not.toBeTruthy();
+  expect(n).toBeFalsy();
+});
+
+test('zero', () => {
+  const z = 0;
+  expect(z).not.toBeNull();
+  expect(z).toBeDefined();
+  expect(z).not.toBeUndefined();
+  expect(z).not.toBeTruthy();
+  expect(z).toBeFalsy();
+});
+```
+
+## Number Mathers
+```js
+test('two plus two', () => {
+  const value = 2 + 2;
+  expect(value).toBeGreaterThan(3);
+  expect(value).toBeGreaterThanOrEqual(3.5);
+  expect(value).toBeLessThan(5);
+  expect(value).toBeLessThanOrEqual(4.5);
+
+  // toBe and toEqual are equivalent for numbers
+  expect(value).toBe(4);
+  expect(value).toEqual(4);
+});
+```
+
+## Strings Mathers
+```js
+test('there is no I in team', () => {
+  expect('team').not.toMatch(/I/);
+});
+
+test('but there is a "stop" in Christoph', () => {
+  expect('Christoph').toMatch(/stop/);
+});
+```
+
+## Arrays and Iterables
+
+```js
+
+const shoppingList = [
+  'diapers',
+  'kleenex',
+  'trash bags',
+  'paper towels',
+  'milk',
+];
+
+test('the shopping list has milk on it', () => {
+  expect(shoppingList).toContain('milk');
+  expect(new Set(shoppingList)).toContain('milk');
+});
+
+```
+
+# beforeEach and afterEach hooks
+
+If you have some work you need to do repeatedly for many tests, you can use beforeEach and afterEach hooks.
+
+# beforeAll and afterAll hooks
+
+In some cases, you only need to do setup once, at the beginning of a file. This can be especially bothersome when the setup is asynchronous, so you can't do it inline. Jest provides beforeAll and afterAll hooks to handle this situation.
+
+# failing test 
+
+If a test is failing, one of the first things to check should be whether the test is failing when it's the only test that runs. To run only one test with Jest, temporarily change that test command to a test.only:
+```JS
+test.only('this will be the only test that runs', () => {
+  expect(true).toBe(false);
+});
+```
+similarly there is `test.skip` to skip the test
+Note: if we are using `it` block insted of `test` then `test.only` will become `fit` and for skip it will become `xit`
+# Mock Functions
+
+The below code creates a mock function.
+
+```js
+const mockCallback = jest.fn(x => 42 + x);
+```
+
+
+# Run tests of a specefic file
+
+In jest we have to run jest in watch mode `jest --watchAll` and then it will show us some options in command prompt.
+We can select p to filter test files by regex...just type the name of test file and hit down key or enter to run the file.
+
+# Run specefic test by test name
+
+Similar to above we can hit `t` to filter by test name
+
+# describe(name, fn)
+
+name: Name of group 
+fn: function that contains tests
+We can also use .only and .skip for describe
+
+# Test suites
+it means test file i.e if there are 3 test files then it total 3 test suites will be there (commonly we confuse it with no of describe blocks)
+
+# filenames
+.test.js/.test.tsx/.spec.js/.spec.tsxin react we can also use __test__ folder and use the normal extensions as .js/.tsx 
+
+# Coverage
+
+To check the text coverage we can use `npm run test --coverage --watchAll` option in package.json, we can also 
+add coverageThreshold i.e amount of percent test should pass in package.json. 
+When we run coverage flag it also creates reports(.html) which we can open in browser.
+
+# RTL Queries
+
+In the below image the blue boxes shows us the methods that we can use on screen or element but all the methods must have one 
+of the postfix as `Role, LabelText, PlaceHolderText, Text, DisplayValue, AltText, Title and TestId`. All of these methods 
+are available on `screen` instance of RTL
+My Suggestions:
+- use of queryBy whould be a good option as there are less chances of throwing error if nothing found. 
+- we should get the element by role or testId (getting by displayvalue, labelText, alt text seems to be bad option because they work with very few components)
+- we can add data-testid on react controls as ` <button data-testid="my-button" onClick={onClick}>`
+- If a element will be getting rendred after sometime i.e fetching api data and displaying it in such scenarios findBy/findAllBy is good choice as
+it returns us the promise. find methods have default timout of 1000ms. Also this is the reason before find methods we have await keyword.
+- We can also have custom timeout for an element as a third parameter
+
+e.g. 
+```js
+const button = await screen.findByRole(
+			'button',
+			{ name: 'Last 30 days' },
+			{ timeout: 2000 }
+		);
+```
+
+<img src={TestingImage} style={{maxWidth: '100%'}} />
+
+# RTL Manual Queries
+
+We should avoid using it but in case it is required we can do something like
+
+```js
+const  {container} = render(<MyComponent />)
+const element = container.querySelector("[data-foo='bar']")
+```
+
+# Debugging (React specefic)
+
+we cab make use of `screen.debug()` 
+Note: alternativly we could use `jest` vs code plugin to debug
+
+# Simulating event
+
+In react we have a library for simulating event `@testing-library/user-event`
+```js
+  test('renders a count of 1 after clicking the increment button', async () => {
+    user.setup()
+    render(<Counter />)
+    const incrementButton = screen.getByRole('button', { name: 'Increment' })
+    await user.click(incrementButton)
+    const countElement = screen.getByRole('heading')
+    expect(countElement).toHaveTextContent('1')
+  })
+```
