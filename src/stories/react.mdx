@@ -1,0 +1,32 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="React" />
+
+# What happens if we use normal (let) variable to handle the state in functional component?
+- Changes made into normal variable will be lost in re-render so we will not be getting updated values
+- Changing normal variable will not cause re-render 
+- In below example the if you see after clicking handleClick() the value of Log 1 will still be 0 no matter what
+- however The value inside handleClic's console.log will be updated one, this might be due to handleClick forms a closure
+
+```jsx
+
+
+export default function Gallery() {
+  let index = 0;
+
+  console.log('Log 1 = ', index)
+  function handleClick() {
+    index = index + 1;
+    console.log('Log 2 = ', index);
+  }
+  ...
+}
+```
+# useRef: 
+- useRef hook returns us a mutable object which is having only one property as `current`
+- we can directly change this `current` property and it will not cause the rerendering to happen (may be because memory address is not changed)
+- in the let variable example if you replace it with useRef object then it will work as expected only thing is rerendering will not happen
+
+# 
+
+

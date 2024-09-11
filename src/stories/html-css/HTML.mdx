@@ -89,6 +89,10 @@ INLINE-BLOCK:
 - can have height or width
 - can have padding or margin
 
+Exeception: 
+Image, audio, video tags are inline by default but we can have them height and width. 
+The elements which have `src` attribute can have height width and these are also called as `replaced` inline elements
+
 # Custom elements
 - we can have any custom element e.g `<abhilash>THis is index 1</abhilash>`
 - by default it is display:inline
@@ -201,3 +205,178 @@ Note: this is the reason why vite is so fast in development mode because it must
 # Why vite uses ESM(ES6) in dev mode and Commonjs in production mode
 Even though native ESM is now widely supported, shipping unbundled ESM in production is still inefficient (even with HTTP/2) due to the additional network round trips caused by nested imports. To get the optimal loading performance in production, it is still better to bundle your code with tree-shaking, lazy-loading and common chunk splitting (for better caching).
 
+# What is accessibility in web?
+
+
+Web accessibility refers to the practice of making websites and web applications usable by as many people as possible, including those with disabilities. 
+
+Note: A blind man named Robles sued Domino's Pizza for making their website and mobile app inaccessible to users with disabilities. Robles alleged that the website and app were not accessible for people who use screen readers. The case, Robles v. Domino's, clarified that companies can comply with web accessibility laws by following WCAG standards
+The Robles won the case.
+
+In HTML `ARIA labels`  are part of accessibility. ARIA stands for Accessible Rich Internet Applications.
+
+# What is PWA?
+- A progressive web app (PWA) is an app that's built using web platform technologies, but that provides a user experience like that of a platform-specific app (android/ios/web).
+- They are able to operate when the user is not interacting with them and when the device is offline. So they should be able to receive messages(push notification) or update with latest data in background.
+- PWA should be installable on local device and access system resources if required(files, photos etc)
+- PWAs can use the whole screen, rather than running in the browser UI
+- PWAs can be distributed in app stores, as well as openly via the web.
+- To create a website PWA we need Web app manigests(.json file with logo, app name, splash screen etc) & service worker(Service worker is optional but general practice it to use them)
+
+# What is Service Worker API?
+- Service workers essentially act as proxy servers that sit between web applications, the browser, and the network (when available).
+- It was mainly used enhance offline experience, access to push notification and background sync API
+- it uses `Worker` api (different from web worker api). The Worker interface of the Web Workers API represents a background task that can be created via script, which can send messages back to its creator.
+- Service worker are non-blocking i.e async
+- APIs such as synchronous XHR and Web Storage can't be used inside a service worker.
+- Service workers only run over HTTPS, for security reasons.
+
+# CSS selectors:
+- Some of the simple selectors `Element, id, class`
+- Descendant Selector: `The following example selects all <p> elements inside <div> elements`, It also selects deeply nested p tags under div
+```CSS
+div p {
+  background-color: yellow;
+}
+```
+- Child Selector: `The following example selects all <p> elements that are children of a <div> element`, unlike descendant selectors
+ it will not select deeply nested p tags only immidiate childrens were selected.
+
+```CSS
+div > p {
+  background-color: yellow;
+}
+```
+
+- Adjacent Sibling Selector (+): Sibling elements must have the same parent element, and "adjacent" means "immediately following".
+The following example selects the first `<p>` element that are placed immediately after `<div>` elements. In below example only `Paragraph 3 and 7` will be selcted
+It only selects one element after the div.
+```HTML
+<html>
+<head>
+<style>
+div + p {
+  background-color: yellow;
+}
+</style>
+</head>
+<body>
+
+<h2>Adjacent Sibling Selector</h2>
+
+<p>The + selector is used to select an element that is directly after another specific element.</p>
+<p>The following example selects the first p element that are placed immediately after div elements:</p>
+
+<div>
+  <p>Paragraph 1 in the div.</p>
+  <p>Paragraph 2 in the div.</p>
+</div>
+
+<p>Paragraph 3. After a div.</p>
+<p>Paragraph 4. After a div.</p>
+
+<div>
+  <p>Paragraph 5 in the div.</p>
+  <p>Paragraph 6 in the div.</p>
+</div>
+
+<p>Paragraph 7. After a div.</p>
+<p>Paragraph 8. After a div.</p>
+
+</body>
+</html>
+```
+- General Sibling Selector (~): It is also similar to `Adjacent Sibling Selector` but difference is that it selects all the siblings after the elemnt.
+  paragraph 3 & 4 will be selected in below case.
+
+```HTML
+<html>
+<head>
+<style>
+div ~ p {
+  background-color: yellow;
+}
+</style>
+</head>
+<body>
+
+<h2>General Sibling Selector</h2>
+
+<p>The general sibling selector (~) selects all elements that are next siblings of a specified element.</p>
+
+<p>Paragraph 1.</p>
+
+<div>
+  <p>Paragraph 2.</p>
+</div>
+
+<p>Paragraph 3.</p>
+<code>Some code.</code>
+<p>Paragraph 4.</p>
+
+</body>
+</html>
+```
+
+# CSS specificity calculation
+The selector weight categories decide which style windows
+- Id has weight `1-0-0`
+- Class/Pseuodo-classes(:hover, :required etc) has weight `0-1-0`
+- Element selector and Pseuodo selector with doble-colon (::after, ::before) has weight `0-0-1`
+- Universal selector(*) has weight `0-0-0`
+- Apart from these Inline styles has weight `1-0-0-0`
+- The only way to override inline styles is by using !important.
+examples: 
+```CSS
+[type="password"]             /* 0-1-0 */
+input:focus                   /* 0-1-1 */
+:root #myApp input:required   /* 1-2-1 */
+```
+example 2:
+```CSS
+#myElement {
+  color: green; /* 1-0-0  - WINS!! */
+}
+.bodyClass .sectionClass .parentClass [id="myElement"] {
+  color: yellow; /* 0-4-0 */
+}
+``` 
+
+example 
+```CSS
+#myElement {
+  color: yellow; /* 1-0-0 */
+}
+#myApp [id="myElement"] {
+  color: green; /* 1-1-0  - WINS!! */
+}
+```
+example
+```CSS
+:root input {
+  color: green; /* 0-1-1 - WINS because CLASS column is greater */
+}
+html body main input {
+  color: yellow; /* 0-0-4 */
+}
+```
+
+example
+```CSS
+input.myClass {
+  color: yellow; /* 0-1-1 */
+}
+:root input {
+  color: green; /* 0-1-1 WINS because it comes later */
+}
+```
+
+# What is CSS box modal?
+- height + width + margin + pading + border => box modal
+
+# What is box-sizing?
+- The box-sizing CSS property sets how the total width and height of an element is calculated.
+- 2 main properties of box-sizing are `content-box` default one and `border-box`
+- content-box: heihgt and width applied to content padding, border are excluded from it and later applied. 
+making the box larger than given height & width
+- border-box: it includes padding and border for height and width.
