@@ -1,5 +1,203 @@
 import { Meta } from '@storybook/blocks';
+import AsyncDefer from '../../assets/async-defer.jpg';
 
 <Meta title="HTML-CSS/HTML" />
 
-# test  
+# is `<!DOCTYPE>` a html tag?
+
+The declaration is not an HTML tag. It is an "information" to the browser about what document type(version) to expect.
+
+# What is meta tag
+
+The `<meta>` tag defines metadata about an HTML document. It should be declared in head tag and it is used to 
+specify character set, page description, keywords, author of the document, and viewport settings(zoom level).
+
+```HTML
+<head>
+  <meta charset="UTF-8">
+  <meta name="description" content="Free Web tutorials">
+  <meta name="keywords" content="HTML, CSS, JavaScript">
+  <meta name="author" content="Abhilash">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+```
+
+# Script tag async vs defer 
+
+<img src={AsyncDefer}  style={{maxWidth: '100%'}} />
+
+# Are html comments avilable in DOM?
+yes they are in DOM but ignored by browser.
+
+# What is svg?
+Its a image format which can be saved using .svg or can be directly used in html under `svg` element
+it defines graphics in XML format, it has inbuild graphics avilable such as circle, rect, polygon, text and much more.
+Its a 2d verctor graphics. It also has no effect on quality of image depending upon the size so you can scale to any size without loosing the resolution.
+It can also be combined with css animation.
+
+# What is Canvas?
+The `<canvas>` element is only a container for graphics. You must use JavaScript to actually draw the graphics.
+It can be used to draw 2d or 3d graphics useful for games, art. One big example of `canvas` is google maps and popular
+library could be `three.js`
+
+# Preload, Prefetch,  And fetchpriority in browser
+preload is a declarative fetch, allowing you to force the browser to make a request for a resource without blocking the document’s onload event.
+Prefetch is a hint to the browser that a resource might be needed, but delegates deciding whether and when loading it is a good idea or not to the browser.
+`(like <link rel=“preload”> & <link rel=“prefetch”>)`
+fetchpriority is used for `script` tags, it has 3 options as `high, low, auto`
+
+
+# Session storage 
+- Works in same tab
+- data will be lost on tab close
+- persists through page reload or navigation
+
+# Local storage
+- Works across different tabs and windows 
+- data is persistent even on tab/browser close 
+- larger capacity 5 to 10 MB
+
+# Cookie
+- Has expiration time
+- example `document.cookie = "test1=Hello; SameSite=None; Secure";`
+- usually sent over network calls
+- HttpOnly Flag: Cookies can be marked with the HttpOnly flag, which makes them inaccessible to JavaScript. This protects cookies from client-side attacks like Cross-Site Scripting (XSS). HttpOnly cookies are only accessible by the server, not by JavaScript code running in the browser.
+- SameSite Flag: The SameSite flag can mitigate Cross-Site Request Forgery (CSRF) attacks by restricting when cookies are sent with cross-site requests.
+- Secure Flag: Cookies can also have a Secure flag, ensuring that they are transmitted only over HTTPS, adding another layer of security for sensitive data like authentication tokens.
+
+Weaknesses:
+
+- Automatically Sent with Requests: Cookies are automatically sent with every HTTP request to the server, which can increase the risk of exposing sensitive information to man-in-the-middle (MITM) attacks if not properly secured (e.g., not using HTTPS).
+- Smaller Storage: Cookies typically have a storage limit of around 4 KB, which limits their use for storing larger amounts of data.
+- Vulnerable Without HttpOnly: If the HttpOnly flag is not set, cookies are accessible via JavaScript and thus vulnerable to XSS attacks.
+
+Note: still cookies can be more secure so the banking websites prefer using them
+
+# display: block vs inline vs inline-block
+
+BLOCK:
+- occupy entire width (100%)
+
+INLINE: 
+- occupy only the required width
+- can not have height or width 
+- can not have margin/padding top or bottom but can have left right padding and margins
+
+INLINE-BLOCK:
+- default works like inline 
+- can have height or width
+- can have padding or margin
+
+# Custom elements
+- we can have any custom element e.g `<abhilash>THis is index 1</abhilash>`
+- by default it is display:inline
+
+# HTML 5 new tags
+- article, aside, audio, canvas, header, main, nav, section, svg, video and much more but these are some important one's
+- datalist is also good one for creating autocomplete it needs to be used along with input
+
+# HTML 5 api's
+- localstorage, sessionstorage, drag and drop, geolocation
+
+# HTML 5 input type attribute
+- color, date, time, dateTime, email, number, range, search, tel, url, week month etc 
+
+# HTML5 Template tag
+- Create template within html like a reusable component 
+- by default template element was hidden
+- it create shado DOM for the templates 
+e.g 
+```HTML
+<div>
+  <template shadowrootmode="open">
+    <style>
+      :host {
+        display: block;
+        border: 1px dotted black;
+        padding: 10px;
+        margin: 10px;
+      }
+      :focus {
+        outline: 2px solid blue;
+      }
+    </style>
+    <div>Clickable Shadow DOM text</div>
+    <input type="text" placeholder="Input inside Shadow DOM" />
+  </template>
+</div>
+```
+
+# What is web component?
+- they are cutom elements with our own implementaion 
+- its rendred as a shadow DOM
+- could be used in microfrontends
+- it has its own lifecyle Functions
+
+
+```js
+// Create a class for the element
+class MyCustomElement extends HTMLElement {
+  static observedAttributes = ["color", "size"];
+
+  constructor() {
+    // Always call super first in constructor
+    super();
+  }
+
+  connectedCallback() {
+    console.log("Custom element added to page.");
+  }
+
+  disconnectedCallback() {
+    console.log("Custom element removed from page.");
+  }
+
+  adoptedCallback() {
+    console.log("Custom element moved to new page.");
+  }
+
+  attributeChangedCallback(name, oldValue, newValue) {
+    console.log(`Attribute ${name} has changed.`);
+  }
+}
+
+customElements.define("my-custom-element", MyCustomElement);
+
+```
+
+# CommonJS vs ES6
+
+- IMP: Browsers do not natively support commonjs we need bundling tools such as webpack to support It
+
+
+
+<table>
+    <thead>
+        <tr>
+            <th>Feature</th><th>ES6(ESM) Modules (Browser-native)</th><th>CommonJS (Node.js)</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><strong>Syntax</strong></td><td><code>import</code> / <code>export</code></td><td><code>require()</code> / <code>module.exports</code></td>
+        </tr>
+        <tr>
+            <td><strong>Support in Browsers</strong></td><td>Native support in modern browsers (no bundler required)</td><td>Not supported in browsers without bundling tools</td>
+        </tr>
+        <tr>
+            <td><strong>Loading</strong></td><td>Asynchronous (inherently)</td><td>Synchronous</td>
+        </tr>
+        <tr>
+            <td><strong>Environment</strong></td><td>Works in both Node.js and browsers</td><td>Works natively in Node.js only</td>
+        </tr>
+        <tr>
+            <td><strong>Scope</strong></td><td>File-level scope (strict mode by default)</td><td>File-level scope</td>
+        </tr>
+    </tbody>
+</table>
+Note: this is the reason why vite is so fast in development mode because it must be using ES6/ESM modules
+
+# Why vite uses ESM(ES6) in dev mode and Commonjs in production mode
+Even though native ESM is now widely supported, shipping unbundled ESM in production is still inefficient (even with HTTP/2) due to the additional network round trips caused by nested imports. To get the optimal loading performance in production, it is still better to bundle your code with tree-shaking, lazy-loading and common chunk splitting (for better caching).
+
