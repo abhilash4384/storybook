@@ -1,0 +1,42 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Weired Behaviour" />
+
+# ?? vs || 
+
+<table>
+    <thead>
+        <tr>
+            <th>Operator</th>
+            <th>Falsy Values Considered</th>
+        </tr>
+    </thead>
+    
+    <tbody>
+        <tr>
+            <td><code>??</code></td>
+            <td><code>null</code>, <code>undefined</code></td>
+        </tr>
+        <tr>
+            <td>||</td>
+            <td><code>false</code>, <code>0</code>, <code>NaN</code>, <code>""</code>, <code>null</code>, <code>undefined</code></td>
+        </tr>
+    </tbody>
+</table>
+
+# Object.is() vs ===
+very little difference is there object.is focuses on value comparison
+```js
+console.log('NaN===NaN =>', NaN === NaN); // false
+console.log('Object.is(NaN,NaN) =>', Object.is(NaN, NaN)); // true
+console.log('Number.NaN=== Number.NaN =>', Number.NaN === Number.NaN); // false
+console.log(
+	'Object.is(Number.NaN,Number.NaN) =>',
+	Object.is(Number.NaN, Number.NaN)
+); // true
+console.log('NaN===Number.NaN =>', NaN === Number.NaN); // false
+console.log('Object.is(NaN,Number.NaN) =>', Object.is(NaN, Number.NaN)); // true
+console.log('+0===-0 =>', +0 === -0); // true
+console.log('Object.is(+0,-0) =>', Object.is(+0, -0)); // false
+
+```

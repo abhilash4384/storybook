@@ -94,9 +94,12 @@ export default function MovingDot() {
 }
 
 ```
-# Can you directly update prop variable
--  we can but if we assign value in some hook (later some point) then it will not be persisted
--  just the initial assignment will be shown
+# Can you directly update prop object
+-  If we directly change prop object it will not throw any error but no changes will be made do the object 
+as the prop object is either freezed if its JS or readonly if typescript
+
+- However if we destructure the prop and change the value of (primitive data type variable) it will get change 
+and only initial value is shown see below example for more details.
 
 ```jsx
 
@@ -128,9 +131,63 @@ linters, jsconfig, tsconfig configuration. So in some project above scenarios ma
 I have directly tried above things in ract.dev environment and they worked. But on all of the above case error will not be thrown.
 
 
+# React error boundry
+Note: it is not a HOC
+```JSX
 
+class ErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false };
+  }
 
+  static getDerivedStateFromError(error) {
+    return { hasError: true };
+  }
 
+  componentDidCatch(error, info) {
+    logErrorToMyService(error, info.componentStack);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      // You can render any custom fallback UI or 404 page
+      return this.props.fallback;
+    }
+
+    return this.props.children;
+  }
+}
+```
+
+# HOC 
+In the below example withBasicClone takes a Component as a parameter and returns us a new component with cloneobj so 
+which ever component wants this they can be wrapped inside withBasicClone.
+```JSX
+function withBasicClone(WrappedComponent) {
+
+  function WithBasicCloneComponent(props) {
+    const cloneObj = (obj) => {
+      // this is not perfect clonning function 
+          const clonnedObj = {};
+          if (typeof obj === 'object') {
+            for (let key in obj) {
+              if (typeof obj[key] === 'object') {
+                clonnedObj[key] = cloneObj(obj[key]);
+              } else {
+                clonnedObj[key] = obj[key];
+              }
+            }
+            return clonnedObj;
+          } else {
+            return obj;
+          }
+    };
+    return <WrappedComponent {...props} cloneObj={cloneObj} />
+  }
+  return WithBasicCloneComponent;
+}
+```
 
 
 
