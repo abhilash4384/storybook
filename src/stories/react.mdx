@@ -27,6 +27,111 @@ export default function Gallery() {
 - we can directly change this `current` property and it will not cause the rerendering to happen (may be because memory address is not changed)
 - in the let variable example if you replace it with useRef object then it will work as expected only thing is rerendering will not happen
 
-# 
+# is useState async?
+- No useState is sync by default but it behaves like async because of react's batch proccessing. 
+- if you see below example only then the value of count will be 1 insted of 3
+- because in below the re-rendering will happen only once not thrice 
+```jsx
+// consider count to be 0 initially
+const increment = () => {
+    setCount(count+1)
+    setCount(count+1)
+    setCount(count+1)
+}
+```
+- if this is the case then why inb async function we could set 2 different states for `setLoader`?
+
+```jsx
+const getData = async () {
+    setLoader(true);
+    const data= await getAPI();
+    setLoader(false);
+}
+```
+- becasue in case of async await as soon as the callback(settimeout, promises etc) pushed on to queue the rerendering will again happen 
+but inside that function the state of the variable is maintained (i.e function is paused )
+- that is after rerendering the function getData will not again exicute from start rather than it was just paused and resumed 
+
+
+# Can you directly update the state variable 
+- Technically we can but it will not trigger rerendering and we should treat state as immutable
+- to see it in action use either array or object's as they are immutable by nature 
+- see below example for refrance by moving mouse pointer on screen
+```jsx
+import { useState } from 'react';
+export default function MovingDot() {
+  const [position, setPosition] = useState({
+    x: 0,
+    y: 0
+  });
+  const [, forceRender] =useState(false)
+  setTimeout(() => {
+      forceRender(true)
+  }, 4000)
+  return (
+    <div
+      onPointerMove={e => {
+        position.x = e.clientX;
+        position.y = e.clientY;
+      }}
+      style={{
+        position: 'relative',
+        width: '100vw',
+        height: '100vh',
+      }}>
+      <div style={{
+        position: 'absolute',
+        backgroundColor: 'red',
+        borderRadius: '50%',
+        transform: `translate(${position.x}px, ${position.y}px)`,
+        left: -10,
+        top: -10,
+        width: 20,
+        height: 20,
+      }} />
+    </div>
+  );
+}
+
+```
+# Can you directly update prop variable
+-  we can but if we assign value in some hook (later some point) then it will not be persisted
+-  just the initial assignment will be shown
+
+```jsx
+
+function Avatar({ person, size }) {
+    /**
+     * It works because of destructuring if we would have set 
+     * props.size = 10 it will not work 
+    */
+  size = 10; // it will work
+  setTimeout(() => {
+    size = 5000; // it wont work
+    console.log('worked')
+  }, 4000)
+  return (
+    <img
+      className="avatar"
+      src={getImageUrl(person)}
+      alt={person.name}
+      width={size}
+      height={size}
+    />
+  );
+}
+
+```
+
+Note: In state and props directly change's throwing of error or displaying error at compile time will depend upon our 
+linters, jsconfig, tsconfig configuration. So in some project above scenarios may work some will throw error. 
+I have directly tried above things in ract.dev environment and they worked. But on all of the above case error will not be thrown.
+
+
+
+
+
+
+
 
 

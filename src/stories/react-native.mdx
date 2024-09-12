@@ -1,0 +1,53 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="React Native" />
+
+# How to run non-expo app on devices 
+- after setting up adb drivers `npm run android` for android
+- for ios we need macos and after setting up xcode we need to run the device from xcode by opening our project
+Note: for ios we also need apple developer account and complete the code signing process
+- some other ways `npx react-native run-ios` 
+
+# incall platform specefic dependencies
+- `npx pod-install ios`
+
+# How to use expo
+- If our project created using `expo` start the development server using `npx expo start` (supports both ios/android) then scan the barcode on your app by downloading expo app
+
+# How to build app for production (non expo)
+- For ios `npm run ios -- --mode="Release"` and submit the app to appstore for review (.ipa file)
+- For android we need to use `keytool` command we will also need keystore file
+`keytool -genkeypair -v -storetype PKCS12 -keystore my-upload-key.keystore -alias my-key-alias -keyalg RSA -keysize 2048 -validity 10000`
+ we will also need gradle variables in .gradle.properties file and need to more changes in gradle file like providing signing key password, keystore file name etc
+ `npx react-native build-android --mode=release`
+- in expo app.json is the configuration file
+
+# React vs React Native elements
+- Normal css files vs StyleSheet.creat({}) 
+- React Native is based on Flex layour (grid not supported)
+- className vs style
+- div vs View, KeyboardAvoidingView(in case of forms we use it)
+- img vs Image `<Image source={require('./my-icon.png')} />; or <Image  source={{uri: 'app_icon'}} style={{width: 40, height: 40}} />`
+- span vs Text (its a inline block element)
+- div with background vs ImageBackground 
+- button vs `TouchableOpacity`
+- react-router-dom vs `@react-navigation`
+- input vs TextInput
+- list(ul) vs ScrollView or FlatList (prefer FlatList as it is more optimized)
+- custom loader vs ActivityIndicator
+- alert, confirm vs Alert, Modal
+- React native supports ref's
+
+
+Additional Components in ReactNative
+- StatusBar, Switch(toggle), 
+
+Missing In ReactNative
+- Portal, svg, canvas, form, table
+
+Alternatives: 
+- Form: we can use plugins such as Formik, react hook form etc
+
+
+
+
