@@ -60,6 +60,44 @@ import { Meta } from '@storybook/blocks';
        Means updaing the value in same memory location (in place changes). In JS array, objects, functions are mutable by default.
        Immutability: It means creating new value and new memory location. By default primitive data types are immutable by nature.  
        </p>
+
+      <h4 className="sb-section-item-heading">Is everything object in JS?</h4>
+       <p className="sb-section-item-paragraph">
+       No, the primitive data types are not objects, we can not call call any methods on `null or undefined`. We can call some methods on strings and numbers because of `boxing` concept.
+       i.e whenever JS encounters some methods being called on primitive data type it will see if can be converted to object and call the method.
+      ```js
+      const PI = 3.14;
+      console.log(PI.toString())
+      const myPI =new Number(PI); //Boxing
+      console.log(myPI)
+      ``` 
+
+       </p>
+
+       <h4 className="sb-section-item-heading">what is Proxy in JavaScript?</h4>
+       <p className="sb-section-item-paragraph">
+        It can be used to detect changes in an object (adding element, deleting, accessing etc).
+        ```js
+        const handler = {
+          get(target, key) {
+            console.log('trying to access property = ', key)
+              return target[key];
+          },
+          set(target, prop, value) {
+            console.log(`changed ${prop} from ${target[prop]} to ${value}`);
+            target[prop] = value;
+          },
+        };
+
+        const obj = {name: 'kittu', age: 2}
+
+        const myProxy = new Proxy(obj,handler)
+
+        const age = myProxy.age; // trying to access property =  age
+        myProxy.name = 'kiara' //changed name from kittu to kiara
+        ```
+
+       </p>
    
    </div>
    </div>

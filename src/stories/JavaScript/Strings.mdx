@@ -2,14 +2,9 @@ import { Meta } from '@storybook/blocks';
 
 <Meta title="JavaScript/Strings" />
 
-<div className="sb-container">
-  <div className='sb-section-title'>
-    # Strings
 
-  </div>
-  <div className="sb-section">
-    <div className="sb-section-item">
-     ```js
+# Strings 
+```js
      const str ='Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without relying on meaningful content. Lorem ipsum may be used as a placeholder before the final copy is';
 
       console.log(str);
@@ -89,9 +84,15 @@ import { Meta } from '@storybook/blocks';
       );
 
       console.log(`convert string to array => [...'Abhilash'] =>`, [...'Abhilash']);
-
-     ```
-    </div>
-
-  </div>
-</div>
+```
+ 
+ # Strings are mutable or imutable? 
+- By default strings and all primitive data types are immutable(can not modify at memory location) in js. 
+```js
+  const myname = 'kiara'
+  console.log(myname[0], myname[1]) // k i
+  myname[0] = 'M'; // you can not change the string this way because of immutability 
+  myname[1] = 'E';
+  console.log(myname[0], myname[1]) // k i
+  console.log(myname) // kiara
+```

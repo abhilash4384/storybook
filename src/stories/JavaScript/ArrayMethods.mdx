@@ -1,0 +1,209 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="JavaScript/Arrays" />
+
+# is typeof array object, if no then how to identify an array?
+```js
+const arr = [1,2,3,4]
+console.log('typeof = ', typeof arr) // object
+console.log(Array.isArray(arr)) // true
+```
+
+# What is sparse array?
+- Array with `empty slots` (not null or undefined) is called as empty array, if you try to access such array by index you will get the value as `undefined`.
+```js
+const arr = new Array(10)
+console.log(arr) // [empty × 10]
+console.log(arr[5]) // undefined
+``` 
+
+# delete on array
+```js
+const arr = [1,2,3,4]
+const deletedItem = delete arr[2] // returns true irrespective of operation is successful or not
+console.log(arr, deletedItem) //  [1, 2, empty, 4] true
+// Note: The length of original array is intact (unchanged), the deleted item is replaced by `empty` 
+// thats not the case with objects it will delete the key and value both
+```
+
+# updating the length property of array directly
+
+```js
+const arr = []
+arr.length = 5;
+console.log(arr) // [empty × 5]
+arr.fill('INDIA') 
+console.log(arr) // ['INDIA', 'INDIA', 'INDIA', 'INDIA', 'INDIA']
+arr.length = 2 // decreacing length deletes elements i.e arr[3] is undefined
+console.log(arr) // ['INDIA', 'INDIA']
+```
+
+# Mutating(changing orignal array) vs Non-Mutating alternatives
+
+
+<table>
+  <thead>
+    <tr>
+      <th>Mutating method</th>
+      <th>Non-mutating alternative</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><a href="/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/copyWithin"><code>copyWithin()</code></a></td>
+      <td>No one-method alternative</td>
+    </tr>
+    <tr>
+      <td><a href="/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/fill"><code>fill()</code></a></td>
+      <td>No one-method alternative</td>
+    </tr>
+    <tr>
+      <td><a href="/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/pop"><code>pop()</code></a></td>
+      <td><a href="/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/slice"><code>slice(0, -1)</code></a></td>
+    </tr>
+    <tr>
+      <td><a href="/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/push"><code>push(v1, v2)</code></a></td>
+      <td><a href="/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/concat"><code>concat([v1, v2])</code></a></td>
+    </tr>
+    <tr>
+      <td><a href="/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/reverse"><code>reverse()</code></a></td>
+      <td><a href="/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/toReversed"><code>toReversed()</code></a></td>
+    </tr>
+    <tr>
+      <td><a href="/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/shift"><code>shift()</code></a></td>
+      <td><a href="/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/slice"><code>slice(1)</code></a></td>
+    </tr>
+    <tr>
+      <td><a href="/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort"><code>sort()</code></a></td>
+      <td><a href="/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/toSorted"><code>toSorted()</code></a></td>
+    </tr>
+    <tr>
+      <td><a href="/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/splice"><code>splice()</code></a></td>
+      <td><a href="/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/toSpliced"><code>toSpliced()</code></a></td>
+    </tr>
+    <tr>
+      <td><a href="/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/unshift"><code>unshift(v1, v2)</code></a></td>
+      <td><a href="/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/toSpliced"><code>toSpliced(0, 0, v1, v2)</code></a></td>
+    </tr>
+  </tbody>
+</table>
+
+# Array.from 
+The Array.from() static method creates a new, shallow-copied Array instance fron ab array or iterable instance like maps or sets.
+Array.from() never creates a sparse array. If the arrayLike object is missing some index properties, they become undefined in the new array.
+Array.from() has an optional parameter mapFn `Array.from(obj, mapFn, thisArg)`
+```JS
+const set = new Set(["foo", "bar", "baz", "foo"]);
+Array.from(set);
+```
+
+# Array.fromAsync()
+Similar to Array.from() but it work's on `async iterables` and returns `promise` insted of array.
+It is similar to `promise.all` except 2 main differences
+1. Array.fromAsync() awaits each value yielded from the object sequentially. Promise.all() awaits all values concurrently(parallely).
+2. Array.fromAsync() iterates the iterable lazily, and doesn't retrieve the next value until the current one is settled. Promise.all() retrieves all values in advance and awaits them all.
+
+```JS
+function* makeIterableOfPromises() {
+  for (let i = 0; i < 5; i++) {
+    yield new Promise((resolve) => setTimeout(resolve, 100));
+  }
+}
+
+(async () => {
+  console.time("Array.fromAsync() time");
+  await Array.fromAsync(makeIterableOfPromises());
+  console.timeEnd("Array.fromAsync() time");
+  // Array.fromAsync() time: 503.610ms
+
+  console.time("Promise.all() time");
+  await Promise.all(makeIterableOfPromises());
+  console.timeEnd("Promise.all() time");
+  // Promise.all() time: 101.728ms
+})();
+
+```
+
+# Array.prototype.at() 
+- one difference between accessing direct index and at
+```js
+const arr = ["foo", "bar", "baz", "foo"];
+console.log(arr.at(-2)) // baz
+console.log(arr[-2]) // does not work returns undefined
+```
+
+# Array.prototype.concat()
+- The concat() method of Array instances is used to merge two or more arrays. This method does not change the existing arrays, but instead returns a new array.
+
+# Array.prototype.entries()
+- The entries() method of Array instances returns a new array iterator object that contains the key/value pairs for each index in the array.
+```JS
+const array1 = ['a', 'b', 'c'];
+const iterator1 = array1.entries();
+console.log(iterator1.next().value);
+```
+- Note: `Array.prototype.keys()` also works similary returning iterable of keys and `Array.prototype.values()` returns iterable of values
+
+# Array.prototype.findIndex(cb, thisArg)
+- The index of the first element in the array that passes the test. Otherwise, -1.
+- difference between findIndex and indexOf => indexOf(searchElement, fromIndex)
+
+# Array.prototype.flat(depth)
+- The flat() method of Array instances creates a new array with all sub-array elements concatenated into it recursively up to the specified depth.
+- by default if we do not provide depth it is default to 1 
+```js
+const arr1 = [0, 1, 2, [3, 4]];
+
+console.log(arr1.flat()); 
+// expected output: Array [0, 1, 2, 3, 4]
+
+const arr2 = [0, 1, [2, [3, [4, 5]]]];
+
+console.log(arr2.flat());
+// expected output: Array [0, 1, 2, Array [3, Array [4, 5]]]
+
+console.log(arr2.flat(2));
+// expected output: Array [0, 1, 2, 3, Array [4, 5]]
+
+console.log(arr2.flat(Infinity));
+// expected output: Array [0, 1, 2, 3, 4, 5]
+```
+
+# Array.prototype.flatMap()
+-  It is identical to a map() followed by a flat() of depth 1 (arr.map(...args).flat())
+```js
+const arr1 = [1, 2, 1];
+
+const result = arr1.flatMap((num) => (num === 2 ? [2, 2] : 1));
+
+console.log(result);
+// Expected output: Array [1, 2, 2, 1]
+```
+# Array.prototype.includes(searchElement, fromIndex?)
+- remeber .contains is not a function on array or string insted use this one
+
+# Array.prototype.join(seprator?)
+- returns a string by joing array, default seprator value is ','
+- The string conversions of all array elements are joined into one string. If an element is undefined or null, it is converted to an empty string instead of the string "null" or "undefined".
+- The join method is accessed internally by Array.prototype.toString() with no arguments. Overriding join of an array instance will override its toString behavior as well. 
+this is the reason arr.toString() returns similar result to arr.join()
+
+# Array.prototype.slice(start?, end?)
+
+-  returns a shallow copy of a portion of an array into a new array object selected from start to end (end not included) 
+
+# Array.prototype.unshift(element1, element2, /* …, */ elementN)
+- adds the specified elements to the beginning of an array and returns the new length of the array.
+- it is opposite of push and another difference is it can take multiple elements opposed to single element of push method
+
+# Array one liner 
+- pop:  returns: The removed element from the array; undefined if the array is empty. (opposite of shift)
+- push: returns: length of new array (opposite of unshift)
+- reduceRight: only the iteration happens from right to left
+- shift:  removes the first element from an array and returns that removed element. This method changes the original array too. (opposite of pop)
+- Array.prototype.splice(start, deleteCount, item1, item2, /* …, */ itemN)
+
+# Array: length
+- Setting length to a value smaller than the current length truncates the array — elements beyond the new length are deleted.
+- Setting any array index (a nonnegative integer smaller than 232) beyond the current length extends the array — the length property is increased to reflect the new highest index.
+- Setting length to an invalid value (e.g. a negative number or a non-integer) throws a RangeError exception.
