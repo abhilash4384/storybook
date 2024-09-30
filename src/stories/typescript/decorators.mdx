@@ -1,0 +1,27 @@
+# What is decorators?
+- decorators allows us to modify class or methods, property or parameter behaviour. 
+- it was heavily used in angular like @Component @Module etc
+- Althought its proposed for javascript but it is still not avilable in JS 
+- If we want to use it we need to either use typescript or use babel with JS 
+- Note that it only works with class based things
+
+```typescript
+// @experimentalDecorators
+function first() {
+  console.log("first(): factory evaluated");
+  return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
+    // target: here target is the class 
+    // propertyKey: is the name of the peroperty on which decorator is used
+    console.log("first(): called");
+  };
+}
+
+class ExampleClass {
+  @first()
+  method() {}
+}
+```
+
+output should be: 
+first(): factory evaluated
+first(): called

@@ -1,0 +1,110 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Angular/Introduction" />
+
+# What does ng stands for in angular ?
+- next generation
+
+# Angular History:
+- The AngularJS (1.x versions) came into picture in year 2010, 
+It was a bit complicated it used to have elements like controller, $scope, watch, apply etc
+- It was developed by Google
+- All the angular 2.x and above versions are called as Angular insted of AngularJS, 
+these versions are drastically different from 1.x versions (for which google also has to face lot of backlash)
+- angular is heavily based on dependency injections, decorators, 2 way data binding
+- angular is a full-fledged framework that ships with modules such as routing, reactive forms, testing libraries,
+compiler etc
+
+# Angular packages:
+Below are the packages that came up with angular framework by default (v.18)
+- **@angular/common**: Exports all the basic Angular directives and pipes, such as NgIf, NgForOf, DecimalPipe, and so on.
+- **@angular/compiler**: Also know as `ngc` 
+- **@angular/core**: Contains angulars core fuctionality things like pipes, life cycle methods and much more
+- **@angular/forms**: supports modules for 2 different approaches - reactive forms, template drive forms
+- **@angular/platform-browser-dynamic**: Supports JIT compilation on supported browsers
+- **zone.js**: From what I understood: we run the code snippets in zones where the sync code will be batched , 
+a zone means time tracker that starts at the beigning of the code and end at the end of the code. 
+The zone js tracks all this timers where they have exicuted and who called them etc. 
+In a nutshell zone js is a automated timer that helps angular to know when certain task has finished and then 
+angular can update the view.
+
+Although this was used from angular 2.x and above, angular is trying to get rid of zone.js(zoneless) from version 17 and 
+it is still in experimental phase. As an alternative angular is pushing `sgnals`.  
+- **rxjs, tslib, @angular/animations, @angular/platform-browser, @angular/router, zone.js**
+- apart from this there are dev dependencies like `jasmine, karma, typescript, @angular/cli...`
+
+# What is Zone.js:
+Note: `This is entirely from what I understood maybe im completly wrong`
+- Suppose that if we are running a function which consists of some sync code statements then some 
+async code statements then again some sync code statements. 
+- What zone js will do is run 1st sync code code statement in one zone, next async code statemnts in 2nd zone, 
+the last sync code statments in 3rd zone. 
+- Now a zone means we are starting a timer at the start of the zone and ending it at the end of the zone statements.
+- All of these zones are hanled by a single parent module so it can track when which zone has completed.
+- Now the important part is not about timer but when certain zone has completed working. 
+- Angular uses this zonejs to know when to make changes in component tree its kind of like a `forceRender` in react
+- The reason for this is angular uses normal class members to maintain changes whenever they change angular should
+know something has changed and that can be used in html view so to make those changes zonejs helps angular.
+
+# What are zoneless angular?
+- So as we know angular uses zone.js to detect changes and to render them the problem is it is a slow, hard to debug
+process 
+- so angular is trying to get rid of zone which angular also call zoneless js
+- now to detect changes or `forceRender` angular is favouring `signals`
+- Angular still ships with `zone.js` but it can not completly get rid of zone.js as there are thousands of 
+apps running on zone.js and they cant be migrated directly to newer versions so to keep up supporting 
+existing apps zone js still comes along with angular framework
+- but for newer apps better to go with signals
+
+
+# Essentials:
+[attribute]: use this on any dom element to make the dom property refer to component variable and do not treat 
+as string
+{{expression}}: here we can write expressions like 1+1 or refer to a variable (sometimes for an attribute we can 
+also use this insted of above one but the above one [attribute] is recommended)
+*ngFor: loop over array
+- Input(): decorator is used to pass data from parent to child (similar to props in react)
+- services: a service is a ts class in angular which can be injected to a component using dependency injection. 
+To make a service DI in component we have to use `@Injectable` decorator on service class
+Note: to make most of the essentials work your component should have imported `CommonModule` 
+
+# Crazy shit:
+- usually angular components are appended with `.component.ts` this is just a naming convention and not necessary
+- The component class Name need not have to start with capital letter
+
+
+# NgModule: 
+- If we are using `standalone` components by setting it to `true` in app component directive then we do not need 
+@NgModule
+- By default in v17 and above supports `standalone` components so we will not see @NgModule but we can use it 
+by configuring `--no-standalone` flag while generating components
+- It was used to create seprate modules of our project
+usual syntax
+
+```typescript
+@NgModule({
+  declarations: [AppComponent, ], // privatly avilable to the module, these are typically components or pipes 
+  imports: [BrowserModule], // import other modules 
+  providers: [], // things which want to inject via Dependancy injection like services
+  bootstrap: [AppComponent], // starting point of app 
+  exports: [] // publicly avialble to other modules, these are typically components or pipes
+})
+```
+- It was helpful remove the clutter in the file
+- The modules which exports all of their components are usually called `shared modules` basically they should 
+have same components in declarations and exports. common examples are social media icons, loading spinners, modals
+etc 
+- `core module` or `service module`: No declarations only services are their in `providers` array of NgModule
+
+# httpModule vs fetch
+- its not mandatory to use httpModule for api calls but more complex apps it is suitable
+- we can use fetch api if we need
+
+# react equivivalnt terms (react term vs angular)
+- ref vs #var on DOM
+- {} vs {{}}
+-  useParams() vs this.route.snapshot.params
+- && vs *ngIf
+- .map vs *ngFor
+- formik/react hook forms vs ReactiveFormsModule/TemplateDriveForms
+
