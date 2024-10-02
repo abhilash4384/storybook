@@ -132,7 +132,11 @@ I have directly tried above things in ract.dev environment and they worked. But 
 
 
 # React error boundry
-Note: it is not a HOC
+Note: it is not a HOC, the other important thing is we try to update the this.state using 
+`static getDerivedStateFromError` method because it will run before render method which is needed in this case, 
+and that is also the reason why we have 2 methods in error boundry. We should only use `componentDidCatch` for
+logging purposes not for setting the error state.
+
 ```JSX
 
 class ErrorBoundary extends React.Component {
