@@ -325,7 +325,8 @@ The selector weight categories decide which style windows
 - Element selector and Pseuodo selector with doble-colon (::after, ::before) has weight `0-0-1`
 - Universal selector(*) has weight `0-0-0`
 - Apart from these Inline styles has weight `1-0-0-0`
-- The only way to override inline styles is by using !important.
+- The only way to override inline styles is by using !important. 
+- !important has the highest priority
 examples: 
 ```CSS
 [type="password"]             /* 0-1-0 */
@@ -370,6 +371,26 @@ input.myClass {
   color: green; /* 0-1-1 WINS because it comes later */
 }
 ```
+
+# What if 2 class (or css selector like id) with same specificity applied to an element?
+- The one which has been declared later in css file or stylesheet overrides
+- the order written on actual element class attribute does not make any difference like in below example
+class 2 wins
+e.g 
+```HTML
+<style>
+        .class1 {
+            background-color: green;
+            height: 200px;
+            aspect-ratio: 1;
+        }
+
+        .class2 {
+            background-color: pink;
+        }
+    </style>
+ <div class="class2 class1"></div>
+``` 
 
 # What is CSS box modal?
 - height + width + margin + pading + border => box modal

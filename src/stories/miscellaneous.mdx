@@ -1,0 +1,70 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="miscellaneous" />
+
+# This has nothing to do with study material so you can skip it, it is just a useful stuff that I suffer 
+
+# git ssh setup
+I have tried it in windows, use powershell as admin in windows
+- ssh-keygen -o -t rsa -C "windows-ssh@mcnz.com"
+In place of `windows-ssh@mcnz.com` we can have any string but usually it should be email
+- once this command is fired powershell asks for the file name, usually all git provider look for id_rsa file 
+by default but doing so will remove existing git ssh key so to support multiple git providers like github, gitlab
+create different ssh files, you can give any name to file not needed to preppend with id_ 
+- The main thing to note here is that the we have to copy the filename.pub containts and paste(configure)
+on git providers
+- Next update the config file usually all pub files, ssh files are in `~/.ssh` directory i.e users/user name/ .ssh 
+- in config file add below lines 
+```
+Host gitlab.com
+HostName gitlab.com
+User git
+IdentityFile ~/.ssh/gitlab2
+IdentitiesOnly yes
+
+```
+- update the provider in place of host and hostname also update the identity file with the newly created file name
+- lastly to test the the setup fire `ssh -T git@gitlab.com`, if everything was setup correctly it will greet you.
+
+# How to freeze a hover/focus element e.g like dropdown or tooltip?
+- if popovers are based on css we can use dev tools `focus, active simulate behvaiour`
+- otherwise we can have setTimeout(() => debugger, 2000 ) and hover over that element and wait for the 
+debugger to kick in
+
+# How to update incomming network request in case some of the params are not as expected?
+we can use devetools override mechaninsm, we can also solve cors issue by overriding headers 
+(option name is override containet)
+
+# Performance tab chrome:
+- Start it with record button 
+- Access the website as you want 
+- once done hit the stop button
+Performance tab will capture all the screenshots during this period and which we can play or look at the 
+as a slice(piece) of the recording and provides us data like layour shifts, timings, Network etc 
+
+# Searching for a specefic style(.class or id) file
+- in the console tab select the 3 dot menu and find for the search tab, there writhe the style name (class or id) 
+
+# capture screenshots
+- From elements tab select the dom element right click on it and there is a option to `Capture node screenshot`
+- other way: `ctrl + p` search `screenshot`
+
+# fetchpriority attribute for images
+- high| low | auto 
+- auto is default one here
+- useful in the cases of carosul where user sees the 1st image initially so rest of the images can have `low` 
+fetch priority and the first one should be `high`
+- similarly a long scrolling page: the top once should have `high` priority and `low` to bottom
+- this attribute can also be applied on scripts and style tags
+
+# HTML vs DOM?
+Html represents initial page content and DOM represents current page content i.e javascript or css
+can modify the contantets of htm once loaded which whill not be happening in the actual html but in the DOM
+
+# Snippets trick:
+- Write some scripts that you want to run and whenever you want to run it simply `ctrl+p` and use `>` name of 
+the snippet file will bring you to that snippet
+- if you directly want to exicute it `!` file name
+
+https://www.youtube.com/watch?v=SkUcO4ML5U0&list=PLNYkxOF6rcIAcezfL8q0rjt13ufKseL5X&index=15
+# Devtools profiles and react profiler
