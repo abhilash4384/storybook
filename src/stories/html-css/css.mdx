@@ -7,3 +7,154 @@ import { Meta } from '@storybook/blocks';
 `@media(prefers-color-scheme: dark)`
 ```css
 ```  
+# :is, :where, :has 
+
+- the psudo selector `is & where` works similar to each other the only difference is `is` has highest specifity 
+of the included elements where as `where` does not have any specificity basically it makes 0 specificity
+
+- The purpose of these psudo selector is to avoid writing repetion for the different clases 
+
+```CSS
+
+/*  
+
+div p, div span {
+color: green
+}
+is equivivalant to below code
+*/
+
+div :is(p, span) {  /* sepcificity 0-0-2*/
+    color: green   
+}
+/* or if you dont want specificity */
+
+
+div :where(p, span) {  /* sepcificity 0-0-1*/
+    color: green   
+}
+
+```
+
+Note: One thing to note here is that: to decide specificity inside `is` 
+the highest specificty element is considered i.e even if there are multiple classes and one id selector 
+the specificity becomes 1-0-0 event for classes
+
+- The `has` is completly different on the other hand: `has` psudo selector is a parent selector 
+- ref below example: if a `div` is having `p` tag then it selects those div so the background color 
+gets applied to div who is having paragraph tag in them
+i.e 
+```CSS
+  div:has(p) {  
+            background: green;
+        }
+```
+
+# What if any one of the CSS selector invalid or something breaks the css for a selector?
+- browsers skips the definition for that selector and moves on
+
+# First child selector
+```css
+li:first-child {
+    color: green
+}
+```
+- similarly `:last-child` 
+
+# :focus vs :focus-within
+- :focus-within is a parent selector of the focused element
+
+# :not 
+```css
+p:not(.irrelevant) {
+  font-weight: bold;
+}
+```
+- paragraphs that do not have `.irrelevant` class
+
+# even | odd selector and more
+
+```CSS
+
+li:nth-child(even) {
+  background-color: lightyellow;
+}
+
+li:nth-child(odd) {
+  background-color: green;
+}
+
+/*till 3rd element ie first 3 elements */
+
+li:nth-child(-n+3) {
+    background: pink
+}
+
+/*Select  3rd element onwards */
+
+li:nth-child(n+3) {
+    background: red
+}
+
+/*Select every 3rd element ie 3, 6, 9...the element*/
+
+li:nth-child(3n){
+    background: black
+}
+```
+- Similar to this to select the elements in reverse order (or bottom) use `:nth-last-child` selector
+
+# :root
+
+- it selects the root element in a dom tree (need to check in react if it selects 
+root of a component for moduler css) time being consider it is pointing to `html` tag, the only reason to use
+this is its specificity is higher than `html` selector 
+
+# CSS classes are case sensitive
+
+# Outline vs Border?
+Below are the differences between both of them but one most important thing to remember is that
+the  `box-sizing: border-box`
+
+
+   <table>
+            <thead>
+                <tr>
+                    <th><strong>Feature</strong></th>
+                    <th><strong>Border</strong></th>
+                    <th><strong>Outline</strong></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Position</strong></td>
+                    <td>Inside the element's box model</td>
+                    <td>Outside the element's box model</td>
+                </tr>
+                <tr>
+                    <td><strong>Affects Layout</strong></td>
+                    <td>Yes</td>
+                    <td>No</td>
+                </tr>
+                <tr>
+                    <td><strong>Sides</strong></td>
+                    <td>Can be applied to individual sides</td>
+                    <td>Applied around the whole element</td>
+                </tr>
+                <tr>
+                    <td><strong>Usage</strong></td>
+                    <td>Visual decoration, boundaries</td>
+                    <td>Accessibility, focus indicators</td>
+                </tr>
+                <tr>
+                    <td><strong>Customization</strong></td>
+                    <td>Width, color, style per side</td>
+                    <td>Width, color, style (no sides)</td>
+                </tr>
+                <tr>
+                    <td><strong>Offset</strong></td>
+                    <td>No</td>
+                    <td>Yes (via <code>outline-offset</code>)</td>
+                </tr>
+            </tbody>
+        </table>

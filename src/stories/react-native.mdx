@@ -17,7 +17,8 @@ Note: for ios we also need apple developer account and complete the code signing
 # How to build app for production (non expo)
 - For ios `npm run ios -- --mode="Release"` and submit the app to appstore for review (.ipa file)
 - For android we need to use `keytool` command we will also need keystore file
-`keytool -genkeypair -v -storetype PKCS12 -keystore my-upload-key.keystore -alias my-key-alias -keyalg RSA -keysize 2048 -validity 10000`
+"keytool -genkeypair -v -storetype PKCS12 
+-keystore my-upload-key.keystore -alias my-key-alias -keyalg RSA -keysize 2048 -validity 10000"
  we will also need gradle variables in .gradle.properties file and need to more changes in gradle file like providing signing key password, keystore file name etc
  `npx react-native build-android --mode=release`
 - in expo app.json is the configuration file
@@ -27,7 +28,9 @@ Note: for ios we also need apple developer account and complete the code signing
 - React Native is based on Flex layour (grid not supported)
 - className vs style
 - div vs View, KeyboardAvoidingView(in case of forms we use it)
-- img vs Image `<Image source={require('./my-icon.png')} />; or <Image  source={{uri: 'app_icon'}} style={{width: 40, height: 40}} />`
+- img vs Image 
+`<Image source={require('./my-icon.png')} />`
+or `<Image  source={{uri: 'app_icon'}} style={{width: 40, height: 40}} />`
 - span vs Text (its a inline block element)
 - div with background vs ImageBackground 
 - button vs `TouchableOpacity`
