@@ -158,3 +158,17 @@ the  `box-sizing: border-box`
                 </tr>
             </tbody>
         </table>
+
+
+# Difference between different CSS units:
+ - `px`: absolute unit 
+ - `%`:  parent relative unit
+ - `vw or vh`: device viewport relative unit
+ - `em`: relative to parents font-size
+ - `rem`: relative to root(HTML) font size...usually default font size is 16px 
+ - `ch`: relative to charecter width (did not understood properly)
+For fonts `rem` is better as it changes according to user browser preferences(settings).
+If width needs to be set try to leverage flex | grid auto widths otherwise prefer `%`
+
+
+ 
